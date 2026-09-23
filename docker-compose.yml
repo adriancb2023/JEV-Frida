@@ -3,7 +3,7 @@ services:
     build: .
     container_name: kev-backend
     ports:
-      - "${PORT:-8009}:8009"
+      - "${PORT:-9936}:9936"
     env_file:
       - .env
     volumes:
