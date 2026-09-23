@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
@@ -18,24 +18,26 @@ RUN pip install --no-cache-dir \
     "fastapi>=0.115" \
     "uvicorn>=0.30" \
     "pydantic>=2.9" \
-    "typesafe-sdk>=0.6.0"
+    "typesafe-sdk>=0.6.0" \
+    "setuptools"
 
 # Copiar el paquete kev
 COPY kev/ /app/kev/
 
-# Variables de entorno por defecto (CPU, 16GB RAM, alta fidelidad)
+# Variables de entorno por defecto (CPU, fp32, alta fidelidad)
+# PORT se alinea con el .env; el CMD/HEALTHCHECK lo leen dinámicamente
 ENV PYTHONUNBUFFERED=1 \
     KEV_HOST=0.0.0.0 \
-    PORT=8009 \
+    PORT=9936 \
     KEV_MODEL=jaredpalmer/kev-0.8b \
     KEV_DATE_FACTS=1 \
     KEV_DTYPE=fp32
 
-EXPOSE 8009
+EXPOSE ${PORT}
 
-# Verificación de salud del servicio
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8009/v1/models || exit 1
+# Verificación de salud: usa la misma variable PORT que el servidor
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+  CMD curl -f http://localhost:${PORT}/v1/models || exit 1
 
 # Arrancar el servidor FastAPI
 CMD ["python", "-m", "kev.serve"]

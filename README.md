@@ -28,7 +28,7 @@ La primera vez descargará los pesos de Hugging Face (~1.6 GB) a un volumen pers
 docker compose logs -f
 ```
 
-Una vez levantado, la API responderá en `http://localhost:8009`.
+Una vez levantado, la API responderá en `http://localhost:9936`.
 
 ---
 
@@ -199,7 +199,52 @@ Devuelve la ficha técnica del modelo cargado en memoria, dispositivo de ejecuci
 
 * **Ejemplo:**
   ```bash
-  curl http://localhost:8009/v1/models
+  curl http://localhost:9936/v1/models
+  ```
+* **Respuesta Devuelta:**
+  ```json
+  {
+    "models": [
+      {
+        "name": "kev-latest",
+        "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving jaredpalmer/kev-0.8b at temperature 2.41",
+        "release_date": "2026-09-21",
+        "run": "jaredpalmer/kev-0.8b",
+        "base": "Qwen/Qwen3.5-0.8B-Base",
+        "lora": 16,
+        "device": "cpu",
+        "backend": "torch",
+        "dtype": "float32",
+        "temperature": 2.41,
+        "prefix_cache": {
+          "size": 4,
+          "min_state_tokens": 0,
+          "hits": 0,
+          "misses": 0,
+          "cached_states": 0
+        }
+      },
+      {
+        "name": "jev-latest",
+        "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving jaredpalmer/kev-0.8b at temperature 2.41",
+        "release_date": "2026-09-21",
+        "run": "jaredpalmer/kev-0.8b",
+        "base": "Qwen/Qwen3.5-0.8B-Base",
+        "lora": 16,
+        "device": "cpu",
+        "backend": "torch",
+        "dtype": "float32",
+        "temperature": 2.41,
+        "prefix_cache": {
+          "size": 4,
+          "min_state_tokens": 0,
+          "hits": 0,
+          "misses": 0,
+          "cached_states": 0
+        }
+      }
+    ]
+  }
   ```
 
 ---
@@ -207,14 +252,133 @@ Devuelve la ficha técnica del modelo cargado en memoria, dispositivo de ejecuci
 ### 3. `POST /v1/systemone/permute`
 Prueba de robustez posicional: ejecuta una pregunta `choice` bajo varias permutaciones aleatorias del orden de las opciones para verificar que el resultado es estable y no sufre de sesgos de posición.
 
-* **Parámetros extra:**
-  * `n_perm` (integer, opcional, default 6): Número de órdenes aleatorios a probar.
+* **Parámetros:**
+  * `request` (object, requerido): Una petición `SystemOneRequest` completa (con `state`, `model` y `questions`).
   * `question` (string, requerido): El ID de la pregunta `choice` a permutar.
+  * `n_perm` (integer, opcional, default `6`, máx `64`): Número de órdenes aleatorios a probar.
+  * `seed` (integer, opcional, default `0`): Semilla para reproducibilidad de las permutaciones.
+
+* **Ejemplo de Petición:**
+  ```json
+  {
+    "request": {
+      "state": "El cliente solicita cancelar su suscripción anual porque no utiliza el servicio.",
+      "model": "kev-latest",
+      "questions": {
+        "departamento": {
+          "type": "choice",
+          "instructions": "¿A qué departamento debe derivarse este ticket?",
+          "criteria": {
+            "bajas": "Cancelaciones, reembolsos y rescisión de contratos",
+            "soporte": "Problemas técnicos, bugs o caídas del servicio",
+            "facturacion": "Dudas con recibos, cobros dobles o métodos de pago"
+          }
+        }
+      }
+    },
+    "question": "departamento",
+    "n_perm": 4,
+    "seed": 42
+  }
+  ```
+
+* **Respuesta Devuelta:**
+  ```json
+  {
+    "runs": [
+      {
+        "order": ["bajas", "soporte", "facturacion"],
+        "probabilities": { "bajas": 0.9228, "soporte": 0.0260, "facturacion": 0.0512 },
+        "choice": "bajas",
+        "latency_ms": 285.4
+      },
+      {
+        "order": ["facturacion", "bajas", "soporte"],
+        "probabilities": { "bajas": 0.9195, "soporte": 0.0283, "facturacion": 0.0522 },
+        "choice": "bajas",
+        "latency_ms": 278.1
+      },
+      {
+        "order": ["soporte", "facturacion", "bajas"],
+        "probabilities": { "bajas": 0.9210, "soporte": 0.0271, "facturacion": 0.0519 },
+        "choice": "bajas",
+        "latency_ms": 281.7
+      },
+      {
+        "order": ["bajas", "facturacion", "soporte"],
+        "probabilities": { "bajas": 0.9241, "soporte": 0.0248, "facturacion": 0.0511 },
+        "choice": "bajas",
+        "latency_ms": 276.3
+      }
+    ],
+    "argmax_stable": true,
+    "spread": {
+      "bajas": 0.0046,
+      "soporte": 0.0035,
+      "facturacion": 0.0011
+    }
+  }
+  ```
+
+  > **`argmax_stable: true`** confirma que la opción ganadora es la misma en todas las permutaciones.
+  > **`spread`** muestra la diferencia máxima de probabilidad para cada opción entre todas las permutaciones (cuanto menor, más robusto).
 
 ---
 
 ### 4. `POST /v1/systemone/separate`
 Ejecuta cada una de las preguntas de la petición en un pase independiente hacia el modelo para comparar si el aislamiento de ramas varía respecto al pase conjunto.
+
+* **Petición:** Idéntica a `POST /v1/systemone` (misma estructura `SystemOneRequest`).
+
+* **Ejemplo de Petición:**
+  ```json
+  {
+    "state": "Mi pedido llegó con la talla equivocada. Quiero cambiarlo por una 42.",
+    "model": "kev-latest",
+    "questions": {
+      "tipo": {
+        "type": "choice",
+        "instructions": "Clasifica la incidencia",
+        "criteria": {
+          "cambio_talla": "Cambio por otra talla",
+          "reembolso": "Devolución del dinero",
+          "otro": "Otra incidencia"
+        }
+      },
+      "urgente": {
+        "type": "noul",
+        "instructions": "¿Es urgente?"
+      }
+    }
+  }
+  ```
+
+* **Respuesta Devuelta:**
+  ```json
+  {
+    "model": "kev-latest",
+    "answers": {
+      "tipo": {
+        "type": "choice",
+        "choice": "cambio_talla",
+        "confidence": 0.9310,
+        "probabilities": {
+          "cambio_talla": 0.9540,
+          "reembolso": 0.0320,
+          "otro": 0.0140
+        }
+      },
+      "urgente": {
+        "type": "noul",
+        "noul": 0.2180
+      }
+    },
+    "usage": { "input_tokens": 142, "output_tokens": 54 },
+    "latency_ms": 563.8
+  }
+  ```
+
+  > A diferencia de `/v1/systemone`, aquí cada pregunta se evalúa en un forward pass separado (N preguntas = N pases), por lo que la latencia total es la suma de las individuales. El `input_tokens` también es mayor porque el estado se tokeniza N veces.
 
 ---
 
@@ -222,7 +386,7 @@ Ejecuta cada una de las preguntas de la petición en un pase independiente hacia
 
 ### Con `cURL`
 ```bash
-curl -X POST http://localhost:8009/v1/systemone \
+curl -X POST http://localhost:9936/v1/systemone \
   -H "Content-Type: application/json" \
   -d '{
     "state": "Mi pedido llegó con la talla equivocada. Quiero cambiarlo por una 42.",
@@ -249,7 +413,7 @@ curl -X POST http://localhost:8009/v1/systemone \
 ```python
 import requests
 
-url = "http://localhost:8009/v1/systemone"
+url = "http://localhost:9936/v1/systemone"
 payload = {
     "state": "Error 500 en la base de datos de producción desde las 10:00 AM.",
     "model": "kev-latest",
@@ -274,7 +438,7 @@ print("Probabilidad notificar guardia:", response["answers"]["notificar_guardia"
 ### Con TypeScript / Node.js (`fetch`)
 ```typescript
 async function decidir() {
-  const res = await fetch("http://localhost:8009/v1/systemone", {
+  const res = await fetch("http://localhost:9936/v1/systemone", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -283,7 +447,7 @@ async function decidir() {
       questions: {
         accion: {
           type: "choice",
-          instructions": "¿Qué acción procede según la política de compras?",
+          instructions: "¿Qué acción procede según la política de compras?",
           criteria: {
             aprobar: "Aprobación directa",
             rechazar: "Rechazar por falta de PO",
@@ -312,7 +476,7 @@ decidir();
 | `KEV_DATE_FACTS` | `1` | Precalcula la diferencia en días entre fechas absolutas (aumenta la fidelidad a JEV del 80% al 90%). |
 | `KEV_DTYPE` | `fp32` | Precisión matemática exacta de 32 bits en CPU. |
 | `KEV_HOST` | `0.0.0.0` | IP de escucha dentro del contenedor. |
-| `PORT` | `8009` | Puerto expuesto para el servicio. |
+| `PORT` | `9936` | Puerto expuesto para el servicio. |
 | `KEV_API_KEY` | *(vacío)* | Si se especifica, exige cabecera `Authorization: Bearer <clave>`. |
 
 ---
