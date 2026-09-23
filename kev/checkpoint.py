@@ -209,8 +209,12 @@ class Checkpoint:
         """Delta training: load this checkpoint's adapter and pointer head into `model` (a fresh DecisionModel built with
         LoRA). `ours` is the Meta the new run will save; every architecture field is compared BEFORE loading, because peft
         loads matching keys silently and a half-loaded adapter still trains and still reports a loss. Returns provenance."""
-        from peft import get_peft_model_state_dict, load_peft_weights, set_peft_model_state_dict
-        from .suite import digest   # lazy: the Space vendors this module without kev/suite.py
+        import hashlib
+        def digest(p):
+            h = hashlib.sha256()
+            with open(p, "rb") as f:
+                while chunk := f.read(65536): h.update(chunk)
+            return h.hexdigest()
         for name in self.COMPAT_FIELDS:
             theirs, mine = getattr(self.meta, name), getattr(ours, name)
             if theirs != mine and not (name == "base_revision" and None in (theirs, mine)):

@@ -1,0 +1,41 @@
+services:
+  kev-api:
+    build: .
+    container_name: kev-backend
+    ports:
+      - "${PORT:-8009}:8009"
+    env_file:
+      - .env
+    volumes:
+      # Caché persistente para no volver a descargar los pesos del modelo
+      - hf-cache:/root/.cache/huggingface
+    restart: unless-stopped
+
+    # ----------------------------------------------------
+    # LÍMITES DE MEMORIA (AJUSTAR SEGÚN EL MODELO DEL .ENV)
+    # ----------------------------------------------------
+    deploy:
+      resources:
+        limits:
+          # Para KEV-0.8B (Activo: consume ~1.8GB, tope seguro 4GB):
+          memory: 4G
+
+          # Para KEV-4B (Descomenta si usas el 4B en CPU):
+          # memory: 12G
+
+          # Para KEV-9B (Descomenta si usas el 9B en CPU):
+          # memory: 24G
+
+        # --------------------------------------------------
+        # SOPORTE PARA GPU NVIDIA (OPCIONAL)
+        # Descomenta este bloque si vas a correr KEV en un equipo con GPU NVIDIA:
+        # --------------------------------------------------
+        # reservations:
+        #   devices:
+        #     - driver: nvidia
+        #       count: all
+        #       capabilities: [gpu]
+
+volumes:
+  hf-cache:
+    name: kev_hf_cache
