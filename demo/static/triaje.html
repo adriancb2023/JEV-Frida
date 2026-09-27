@@ -1,0 +1,96 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demo Triaje — KEV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:CircularSp,Helvetica Neue,helvetica,arial,sans-serif;background:#121212;color:#fff;min-height:100vh;padding:0 20px 60px}
+.topbar{display:flex;align-items:center;gap:12px;max-width:780px;margin:0 auto;padding:20px 4px}
+.logo{width:32px;height:32px;border-radius:50%;background:#1ed760;color:#000;font-weight:700;display:flex;align-items:center;justify-content:center}
+.topbar b{font-size:16px}.topbar span{font-size:12px;color:#b3b3b3}
+.topbar a{margin-left:auto;font-size:14px;color:#b3b3b3;text-decoration:none}.topbar a:hover{color:#fff}
+main{max-width:780px;margin:0 auto}
+h1{font-size:24px;font-weight:700;margin:12px 0 4px}
+.sub{font-size:14px;color:#b3b3b3}
+.card{background:#181818;border-radius:8px;padding:24px;margin:16px 0}
+.step{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3}
+.card h2{font-size:18px;font-weight:600;margin:6px 0 12px}
+textarea{width:100%;margin:6px 0;padding:12px 16px;border:none;border-radius:4px;background:#1f1f1f;color:#fff;font:inherit;font-size:14px;outline:none;box-shadow:rgb(18,18,18) 0px 1px 0px,rgb(124,124,124) 0px 0px 0px 1px inset}
+::placeholder{color:#7c7c7c}
+button{margin:12px 8px 0 0;padding:12px 32px;border:none;border-radius:9999px;cursor:pointer;background:#1f1f1f;color:#fff;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+button:hover{background:#2a2a2a;transform:scale(1.02)}
+button.primary{background:#1ed760;color:#000}
+button.primary:hover{background:#3be477}
+#status{font-size:14px;color:#ffa42b;font-weight:600}
+.res{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:640px){.res{grid-template-columns:1fr}}
+.res div{background:#1f1f1f;border-radius:8px;padding:16px}
+.res .k{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3}
+.res .v{font-size:18px;font-weight:700;margin-top:6px}
+.res .s{font-size:12px;color:#b3b3b3}
+.u-baja{color:#1ed760}.u-media{color:#539df5}.u-alta{color:#ffa42b}.u-crítica{color:#f3727f}
+.hist{list-style:none;padding:0;margin-top:12px}
+.hist li{display:flex;gap:10px;align-items:center;padding:10px 14px;margin:6px 0;border-radius:8px;background:#1f1f1f;font-size:13px}
+.hist li:hover{background:#2a2a2a}
+.hist .t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#cbcbcb}
+.hist .d{font-weight:700;white-space:nowrap}
+.hist .u{white-space:nowrap;font-size:11px;font-weight:700}
+.hist button{margin:0;padding:6px 12px;font-size:11px}
+</style></head><body>
+<div class="topbar"><div class="logo">K</div><div><b>Triaje</b><br><span>tickets de soporte</span></div><a href="/">← inicio</a></div>
+<main>
+<h1>Triaje de tickets</h1>
+<p class="sub">Un ticket, 3 decisiones KEV: departamento, urgencia y reclamación formal.</p>
+<div class="card"><div class="step">Analizar</div><h2>Pega un ticket</h2>
+<textarea id="texto" rows="4" data-typing="Me han cobrado dos veces este mes…|Mi pedido lleva 2 semanas sin llegar…|La app se cierra al pagar…"></textarea>
+<button class="primary" onclick="analizar()">Clasificar con KEV</button> <span id="status"></span>
+<div class="res" id="res" style="display:none">
+<div><div class="k">Departamento</div><div class="v" id="rDept"></div><div class="s" id="rDeptC"></div></div>
+<div><div class="k">Urgencia</div><div class="v" id="rUrg"></div><div class="s" id="rUrgS"></div></div>
+<div><div class="k">Reclamación</div><div class="v" id="rRec"></div><div class="s" id="rRecP"></div></div>
+</div></div>
+<div class="card"><div class="step">Historial</div><h2>Últimos tickets</h2>
+<ul class="hist" id="hist"></ul></div>
+</main>
+<script>
+function status(t){document.getElementById('status').textContent=t}
+async function analizar(){
+  status('Preguntando a KEV…');
+  const r=await fetch('/api/tickets',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({texto:texto.value})});
+  if(!r.ok){status('Error: '+(await r.text()).slice(0,200));return}
+  const j=await r.json(); status(''); texto.value='';
+  res.style.display='grid';
+  rDept.textContent=j.departamento; rDeptC.textContent='confianza '+j.dept_conf;
+  rUrg.textContent=j.urgencia.toUpperCase(); rUrg.className='v u-'+j.urgencia;
+  rUrgS.textContent='score '+j.urg_score;
+  rRec.textContent=j.reclamacion?'SÍ':'NO'; rRec.style.color=j.reclamacion?'#f3727f':'#b3b3b3';
+  rRecP.textContent='p='+j.reclamacion_p;
+  if(window.gsap)gsap.from('#res div',{y:14,opacity:0,duration:.35,stagger:.08,ease:'power2.out'});
+  cargar();
+}
+async function cargar(){
+  const hs=await fetch('/api/tickets').then(r=>r.json());
+  hist.innerHTML=hs.map(h=>`<li><span class="t">${h.texto}</span><span class="d">${h.resultado.departamento}</span><span class="u u-${h.resultado.urgencia}">${h.resultado.urgencia}</span><button onclick="borrar('${h.id}')">✕</button></li>`).join('');
+}
+async function borrar(id){await fetch('/api/tickets/'+id,{method:'DELETE'});cargar()}
+cargar();
+function typePlaceholder(el){
+  const phrases=(el.dataset.typing||'').split('|').filter(Boolean);
+  if(!phrases.length||el._typer)return; el._typer=true;
+  let pi=0,txt='',del=false;
+  (function step(){
+    if(document.activeElement===el||el.value){setTimeout(step,800);return}
+    const full=phrases[pi];
+    txt=del?full.slice(0,txt.length-1):full.slice(0,txt.length+1);
+    el.setAttribute('placeholder',txt);
+    let d=del?28:55;
+    if(!del&&txt===full){d=1500;del=true}
+    else if(del&&txt===''){del=false;pi=(pi+1)%phrases.length;d=450}
+    setTimeout(step,d);
+  })();
+}
+document.querySelectorAll('[data-typing]').forEach(typePlaceholder);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>if(window.gsap)gsap.from('.card',{y:28,opacity:0,duration:.55,stagger:.12,ease:'power3.out'})</script>
+</body></html>

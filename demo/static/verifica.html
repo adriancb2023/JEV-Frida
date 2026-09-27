@@ -33,6 +33,12 @@ code{display:block;word-break:break-all;padding:12px 16px;border-radius:4px;font
 .ok{background:#1ed760;color:#000}
 .bad{background:#f3727f;color:#000;animation:shake .4s}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#verList{list-style:none;padding:12px 0 0}
+#verList li{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:6px 0;border-radius:8px;background:#1f1f1f;font-size:13px}
+#verList .qn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vbadge{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;padding:4px 12px;border-radius:2px}
+.v-ok{background:rgba(30,215,96,.15);color:#1ed760}
+.v-bad{background:rgba(243,114,127,.15);color:#f3727f}
 a{color:#539df5}
 </style></head><body>
 <div class="topbar"><div class="logo">K</div><div><b>Certificados</b><br><span>autenticidad de documentos</span></div><a href="/">← inicio</a></div>
@@ -40,21 +46,26 @@ a{color:#539df5}
 <h1>Certificado de autenticidad</h1>
 <p class="sub">El documento nunca sale de tu ordenador: solo se registra su huella SHA-256.</p>
 <p class="priv"><b>Privacidad total.</b> El hash se calcula con JavaScript en tu navegador; al servidor solo llega la huella digital.</p>
-<div class="card"><div class="step">Simulador de hackeo</div><h2>Pon a prueba el sistema</h2>
-<button onclick="location.href='/api/demo-pdf/original'">1 · PDF de prueba</button>
-<button onclick="location.href='/api/demo-pdf/tampered'">2 · PDF con 1 cambio</button>
-<p>Sube cada uno abajo y verás el veredicto instantáneo.</p></div>
-<div class="card"><div class="step">Paso 1 · Huella local</div><h2>Calcula el SHA-256</h2>
-<input type="file" id="f">
+<div class="card"><div class="step">Paso 1 · Documento</div><h2>Consigue el documento original</h2>
+<button onclick="location.href='/api/demo-pdf/original'">Descargar PDF de prueba</button>
+<p>O usa tu propio documento:</p>
+<input type="file" id="f"></div>
+<div class="card"><div class="step">Paso 2 · Huella local</div><h2>Calcula el SHA-256</h2>
 <p>SHA-256:</p><code id="hash">—</code>
 <p>Tamaño: <span id="size">—</span></p></div>
-<div class="card"><div class="step">Paso 2 · Registro</div><h2>Registra el original</h2>
+<div class="card"><div class="step">Paso 3 · Registro</div><h2>Registra el original</h2>
 <button class="primary" onclick="registrar()">Registrar huella</button>
 <p id="reg"></p></div>
-<div class="card"><div class="step">Paso 3 · Verificación</div><h2>¿Es idéntico al original?</h2>
+<div class="card"><div class="step">Paso 4 · Verificación</div><h2>¿Es idéntico al original?</h2>
 <input type="text" id="cid" placeholder="ID certificado" data-typing="ID certificado|Ej. f1a7d32f313e">
 <button class="primary" onclick="verificar()">Verificar</button>
-<p id="ver"></p></div>
+<p id="ver"></p>
+<p style="margin-top:14px">O enfrenta <b style="color:#fff">varios documentos</b> al mismo original, de 1 en 1:</p>
+<input type="file" id="fv" multiple accept=".pdf,.txt,.md">
+<ul id="verList"></ul></div>
+<div class="card"><div class="step">Simulador de hackeo</div><h2>Pon a prueba el sistema</h2>
+<button onclick="location.href='/api/demo-pdf/tampered'">Descargar PDF con 1 carácter cambiado</button>
+<p>Súbelo en el paso 1, calcula su huella y verifícalo contra tu certificado: verás el veredicto ALTERADO al instante.</p></div>
 </main>
 <script>
 let HASH=null,SIZE=0,NAME='';
@@ -73,6 +84,10 @@ async function registrar(){
     <a href="/api/certs/${r.id}/certificado.pdf">descargar sello PDF</a>`;
   cid.value=r.id; history.replaceState(null,'','?id='+r.id);
 }
+async function sha256hex(buf){
+  const d=await crypto.subtle.digest('SHA-256',buf);
+  return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 async function verificar(){
   const r=await fetch(`/api/certs/${cid.value}/verify`,{method:'POST',
     headers:{'Content-Type':'application/json'},
@@ -80,6 +95,28 @@ async function verificar(){
   ver.innerHTML=`<span class="verdict ${r.identico?'ok':'bad'}">${r.veredicto}</span>`;
   if(window.gsap)gsap.from('#ver span',{scale:.8,opacity:0,duration:.4,ease:'back.out(2)'});
 }
+// verificación en lote: N documentos contra el mismo certificado, de 1 en 1
+fv.onchange=async e=>{
+  const files=[...e.target.files];
+  if(!files.length||!cid.value){ver.innerHTML='<span class="verdict bad">Elige primero el ID del certificado</span>';return}
+  verList.innerHTML=files.map((fl,i)=>`<li id="v${i}"><span class="qn">${i+1}/${files.length} · ${fl.name}</span><span class="vbadge">En cola</span></li>`).join('');
+  for(let i=0;i<files.length;i++){
+    const row=document.getElementById('v'+i);
+    try{
+      const buf=await files[i].arrayBuffer();
+      const h=await sha256hex(buf);
+      const r=await fetch(`/api/certs/${cid.value}/verify`,{method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({sha256:h,filename:files[i].name,size:files[i].size})}).then(r=>r.json());
+      row.querySelector('.vbadge').outerHTML=r.identico
+        ?'<span class="vbadge v-ok">Original</span>'
+        :'<span class="vbadge v-bad">Alterado</span>';
+    }catch(err){
+      row.querySelector('.vbadge').outerHTML='<span class="vbadge v-bad">Error</span>';
+    }
+  }
+  if(window.gsap)gsap.from('#verList li',{x:-16,opacity:0,duration:.3,stagger:.06,ease:'power2.out'});
+};
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>

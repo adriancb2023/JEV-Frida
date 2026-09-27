@@ -47,9 +47,12 @@ app = FastAPI(title="kev-demo")
 
 def _db_read():
     if not os.path.exists(DB_PATH):
-        return {"offers": [], "candidates": [], "certs": []}
+        return {"offers": [], "candidates": [], "certs": [], "tickets": [], "phishing": []}
     with open(DB_PATH, encoding="utf-8") as f:
-        return json.load(f)
+        db = json.load(f)
+    db.setdefault("tickets", [])
+    db.setdefault("phishing", [])
+    return db
 
 
 def _db_write(db):
@@ -324,6 +327,133 @@ def verify_cert(cid: str, body: CertIn):
             "veredicto": "ORIGINAL: identico al registrado" if same
             else "ALTERADO: no coincide con el registrado",
             "registrado": {"filename": cert["filename"], "creado": cert["creado"]}}
+
+
+# ---------- Demo 3: triaje de tickets ----------
+
+class TicketIn(BaseModel):
+    texto: str = Field(min_length=1, max_length=5000)
+
+
+@app.post("/api/tickets")
+async def triage_ticket(t: TicketIn):
+    """Un ticket, TRES decisiones KEV en una request: departamento (choice),
+    urgencia (score) y reclamacion formal (noul si/no)."""
+    resp = await kev_ask({
+        "state": {"ticket": t.texto}, "model": "kev-latest",
+        "questions": {
+            "departamento": {
+                "type": "choice",
+                "instructions": "¿Que equipo debe atender este ticket?",
+                "criteria": {"facturación": "Cargos, facturas, pagos",
+                             "envíos": "Entregas, retrasos, paquetes perdidos",
+                             "técnico": "El producto no funciona o da error",
+                             "devoluciones": "Cambios, reembolsos, producto equivocado o dañado"}},
+            "urgencia": {
+                "type": "score",
+                "instructions": "¿Que urgencia tiene este ticket?",
+                "criteria": ["baja: puede esperar", "media: esta semana",
+                             "alta: hoy mismo", "crítica: caida o bloqueo total"]},
+            "reclamacion": {
+                "type": "noul",
+                "instructions": "¿Es una reclamacion formal que exige respuesta oficial?",
+                "criteria": {"true": "Si, reclamacion formal", "false": "No, consulta normal"}}}})
+    a = resp["answers"]
+    urg = ["baja", "media", "alta", "crítica"][round(a["urgencia"]["score"])]
+    tid = uuid.uuid4().hex[:12]
+    res = {"departamento": a["departamento"]["choice"],
+           "dept_conf": a["departamento"]["confidence"],
+           "urgencia": urg, "urg_score": round(a["urgencia"]["score"], 2),
+           "reclamacion": a["reclamacion"]["noul"] >= 0.5,
+           "reclamacion_p": round(a["reclamacion"]["noul"], 4),
+           "latency_ms": resp.get("latency_ms")}
+
+    def go(db):
+        db.setdefault("tickets", []).insert(0, {"id": tid, "texto": t.texto[:500],
+                                                "resultado": res, "creado": _now()})
+        db["tickets"] = db["tickets"][:50]
+        return {"id": tid, **res}
+    return _db_update(go)
+
+
+@app.get("/api/tickets")
+def list_tickets():
+    return _db_read()["tickets"]
+
+
+@app.delete("/api/tickets/{tid}")
+def delete_ticket(tid: str):
+    def go(db):
+        db["tickets"] = [t for t in db.get("tickets", []) if t["id"] != tid]
+        return {"ok": True}
+    return _db_update(go)
+
+
+# ---------- Demo 4: detector de phishing ----------
+
+class MailIn(BaseModel):
+    texto: str = Field(min_length=1, max_length=8000)
+
+
+@app.post("/api/phishing")
+async def check_phishing(m: MailIn):
+    """Un email, TRES decisiones KEV: phishing (noul si/no), sospecha (score)
+    y tipo de engaño (choice)."""
+    resp = await kev_ask({
+        "state": {"email": m.texto}, "model": "kev-latest",
+        "questions": {
+            "phishing": {
+                "type": "noul",
+                "instructions": "¿Es este email un intento de phishing o fraude?",
+                "criteria": {"true": "Si, es phishing o fraude", "false": "No, es legitimo"}},
+            "sospecha": {
+                "type": "score",
+                "instructions": "¿Que nivel de sospecha tiene este email?",
+                "criteria": ["legitimo", "dudoso", "sospechoso", "phishing claro"]},
+            "tipo": {
+                "type": "choice",
+                "instructions": "Si fuera un engaño, ¿de que tipo seria?",
+                "criteria": {"suplantación": "Se hace pasar por una empresa o persona conocida",
+                             "prisa": "Presiona con urgencia o amenaza de bloqueo",
+                             "premio": "Promete un premio, reembolso o ganancia facil",
+                             "ninguno": "No hay engaño, es legitimo"}}}})
+    a = resp["answers"]
+    pid = uuid.uuid4().hex[:12]
+    res = {"phishing": a["phishing"]["noul"] >= 0.5,
+           "phishing_p": round(a["phishing"]["noul"], 4),
+           "sospecha": round(a["sospecha"]["score"] / 3 * 100, 1),
+           "tipo": a["tipo"]["choice"],
+           "latency_ms": resp.get("latency_ms")}
+
+    def go(db):
+        db.setdefault("phishing", []).insert(0, {"id": pid, "texto": m.texto[:500],
+                                                 "resultado": res, "creado": _now()})
+        db["phishing"] = db["phishing"][:50]
+        return {"id": pid, **res}
+    return _db_update(go)
+
+
+@app.get("/api/phishing")
+def list_phishing():
+    return _db_read()["phishing"]
+
+
+@app.get("/api/phishing/ejemplos")
+def phishing_examples():
+    """Galeria de ejemplos para la demo: 10 legitimos + 25 phishing."""
+    p = os.path.join(DATA_DIR, "ejemplos_phishing.json")
+    if not os.path.exists(p):
+        return {"legitimos": [], "phishing": []}
+    with open(p, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@app.delete("/api/phishing/{pid}")
+def delete_phishing(pid: str):
+    def go(db):
+        db["phishing"] = [p for p in db.get("phishing", []) if p["id"] != pid]
+        return {"ok": True}
+    return _db_update(go)
 
 
 # ----- PDFs de prueba + certificado sellado (PDF minimo, stdlib) -----

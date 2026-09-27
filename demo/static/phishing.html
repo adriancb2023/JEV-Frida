@@ -1,0 +1,106 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Detector de phishing — KEV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:CircularSp,Helvetica Neue,helvetica,arial,sans-serif;background:#121212;color:#fff;min-height:100vh;padding:0 20px 60px}
+.topbar{display:flex;align-items:center;gap:12px;max-width:780px;margin:0 auto;padding:20px 4px}
+.logo{width:32px;height:32px;border-radius:50%;background:#1ed760;color:#000;font-weight:700;display:flex;align-items:center;justify-content:center}
+.topbar b{font-size:16px}.topbar span{font-size:12px;color:#b3b3b3}
+.topbar a{margin-left:auto;font-size:14px;color:#b3b3b3;text-decoration:none}.topbar a:hover{color:#fff}
+main{max-width:780px;margin:0 auto}
+h1{font-size:24px;font-weight:700;margin:12px 0 4px}
+.sub{font-size:14px;color:#b3b3b3}
+.card{background:#181818;border-radius:8px;padding:24px;margin:16px 0}
+.step{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3}
+.card h2{font-size:18px;font-weight:600;margin:6px 0 12px}
+textarea{width:100%;margin:6px 0;padding:12px 16px;border:none;border-radius:4px;background:#1f1f1f;color:#fff;font:inherit;font-size:14px;outline:none;box-shadow:rgb(18,18,18) 0px 1px 0px,rgb(124,124,124) 0px 0px 0px 1px inset}
+::placeholder{color:#7c7c7c}
+select{width:100%;margin:6px 0;padding:12px 16px;border:none;border-radius:4px;background:#1f1f1f;color:#fff;font:inherit;font-size:14px;outline:none;cursor:pointer}
+.excols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.excols{grid-template-columns:1fr}}
+button{margin:12px 8px 0 0;padding:12px 32px;border:none;border-radius:9999px;cursor:pointer;background:#1f1f1f;color:#fff;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+button:hover{background:#2a2a2a;transform:scale(1.02)}
+button.primary{background:#1ed760;color:#000}
+button.primary:hover{background:#3be477}
+#status{font-size:14px;color:#ffa42b;font-weight:600}
+.verdict{display:inline-block;margin-top:14px;padding:12px 32px;border-radius:9999px;font-size:16px;font-weight:700;letter-spacing:1.4px}
+.ok{background:#1ed760;color:#000}
+.bad{background:#f3727f;color:#000;animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.bar{height:8px;border-radius:9999px;background:#2a2a2a;margin:14px 0 6px;overflow:hidden}
+.bar>i{display:block;height:8px;border-radius:9999px;background:linear-gradient(90deg,#1ed760,#ffa42b,#f3727f)}
+.meta{font-size:13px;color:#b3b3b3}
+.hist{list-style:none;padding:0;margin-top:12px}
+.hist li{display:flex;gap:10px;align-items:center;padding:10px 14px;margin:6px 0;border-radius:8px;background:#1f1f1f;font-size:13px}
+.hist .t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#cbcbcb}
+.hist .vok{color:#1ed760;font-weight:700;white-space:nowrap}
+.hist .vbad{color:#f3727f;font-weight:700;white-space:nowrap}
+.hist button{margin:0;padding:6px 12px;font-size:11px}
+</style></head><body>
+<div class="topbar"><div class="logo">K</div><div><b>Antiphishing</b><br><span>detector de correos</span></div><a href="/">← inicio</a></div>
+<main>
+<h1>Detector de phishing</h1>
+<p class="sub">KEV decide: fraude sí/no, % de sospecha y tipo de engaño.</p>
+<div class="card"><div class="step">Analizar</div><h2>Pega el texto del email</h2>
+<div><button onclick="azar('legitimos')">Aleatorio legítimo</button><button onclick="azar('phishing')">Aleatorio phishing</button></div>
+<textarea id="texto" rows="5" data-typing="Estimado cliente, su cuenta será bloqueada en 24h…|Su pedido ha sido enviado, tracking…"></textarea>
+<button class="primary" onclick="analizar()">Analizar con KEV</button> <span id="status"></span>
+<div id="out"></div></div>
+<div class="card"><div class="step">Historial</div><h2>Últimos análisis</h2>
+<ul class="hist" id="hist"></ul></div>
+</main>
+<script>
+let EJEMPLOS={legitimos:[],phishing:[]};
+let ULTIMO={legitimos:-1,phishing:-1};
+async function cargarEjemplos(){
+  EJEMPLOS=await fetch('/api/phishing/ejemplos').then(r=>r.json());
+}
+function azar(grupo){
+  const lista=EJEMPLOS[grupo];
+  if(!lista.length)return;
+  let i;
+  do{i=Math.floor(Math.random()*lista.length)}while(lista.length>1&&i===ULTIMO[grupo]);
+  ULTIMO[grupo]=i; texto.value=lista[i].texto;
+  if(window.gsap)gsap.from('#texto',{opacity:.3,duration:.3});
+}
+cargarEjemplos();
+function status(t){document.getElementById('status').textContent=t}
+async function analizar(){
+  status('Preguntando a KEV…');
+  const r=await fetch('/api/phishing',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({texto:texto.value})});
+  if(!r.ok){status('Error: '+(await r.text()).slice(0,200));return}
+  const j=await r.json(); status('');
+  out.innerHTML=`<div style="margin-top:14px"><span class="verdict ${j.phishing?'bad':'ok'}">${j.phishing?'PHISHING':'LEGÍTIMO'} · p=${j.phishing_p}</span>
+  <div class="bar"><i style="width:${j.sospecha}%"></i></div>
+  <div class="meta">Sospecha ${j.sospecha}% · tipo: <b>${j.tipo}</b></div></div>`;
+  if(window.gsap)gsap.from('#out .verdict',{scale:.8,opacity:0,duration:.4,ease:'back.out(2)'});
+  cargar();
+}
+async function cargar(){
+  const hs=await fetch('/api/phishing').then(r=>r.json());
+  hist.innerHTML=hs.map(h=>`<li><span class="t">${h.texto}</span><span class="${h.resultado.phishing?'vbad':'vok'}">${h.resultado.phishing?'PHISHING':'OK'} ${h.resultado.sospecha}%</span><button onclick="borrar('${h.id}')">✕</button></li>`).join('');
+}
+async function borrar(id){await fetch('/api/phishing/'+id,{method:'DELETE'});cargar()}
+cargar();
+function typePlaceholder(el){
+  const phrases=(el.dataset.typing||'').split('|').filter(Boolean);
+  if(!phrases.length||el._typer)return; el._typer=true;
+  let pi=0,txt='',del=false;
+  (function step(){
+    if(document.activeElement===el||el.value){setTimeout(step,800);return}
+    const full=phrases[pi];
+    txt=del?full.slice(0,txt.length-1):full.slice(0,txt.length+1);
+    el.setAttribute('placeholder',txt);
+    let d=del?28:55;
+    if(!del&&txt===full){d=1500;del=true}
+    else if(del&&txt===''){del=false;pi=(pi+1)%phrases.length;d=450}
+    setTimeout(step,d);
+  })();
+}
+document.querySelectorAll('[data-typing]').forEach(typePlaceholder);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>if(window.gsap)gsap.from('.card',{y:28,opacity:0,duration:.55,stagger:.12,ease:'power3.out'})</script>
+</body></html>

@@ -406,7 +406,24 @@
       "evaluado": "2026-09-27T21:59:03+00:00"
     }
   ],
-  "certs": [],
+  "certs": [
+    {
+      "id": "c8cbfcb3dbcd",
+      "sha256": "2aca5d0f8a6b118ae033d6cb7bd226e58d94d17dad38bbf8014bcde3f7ed7a6b",
+      "filename": "certificado_original.pdf",
+      "size": 2305,
+      "riesgo_kev": 0.5427,
+      "creado": "2026-09-27T22:05:11+00:00"
+    },
+    {
+      "id": "c3f10307138e",
+      "sha256": "2aca5d0f8a6b118ae033d6cb7bd226e58d94d17dad38bbf8014bcde3f7ed7a6b",
+      "filename": "certificado_original.pdf",
+      "size": 2305,
+      "riesgo_kev": 0.5427,
+      "creado": "2026-09-27T22:07:26+00:00"
+    }
+  ],
   "offers": [
     {
       "creada": "2026-09-27T00:00:00+00:00",
@@ -431,6 +448,116 @@
         "Research con usuarios"
       ],
       "titulo": "Diseñador/a UX"
+    }
+  ],
+  "tickets": [
+    {
+      "id": "ee87bead6047",
+      "texto": "mi vecino pone la musica muy alta a partir de las 00:00\n",
+      "resultado": {
+        "departamento": "técnico",
+        "dept_conf": 0.5815,
+        "urgencia": "alta",
+        "urg_score": 1.59,
+        "reclamacion": false,
+        "reclamacion_p": 0.3032,
+        "latency_ms": 1460.3
+      },
+      "creado": "2026-09-27T22:19:00+00:00"
+    },
+    {
+      "id": "741d9af7c339",
+      "texto": "me he cortado un dedo\n",
+      "resultado": {
+        "departamento": "devoluciones",
+        "dept_conf": 0.4241,
+        "urgencia": "media",
+        "urg_score": 1.13,
+        "reclamacion": false,
+        "reclamacion_p": 0.2855,
+        "latency_ms": 1357.4
+      },
+      "creado": "2026-09-27T22:18:33+00:00"
+    },
+    {
+      "id": "f084bd057a9a",
+      "texto": "la bbdd esta corrompida",
+      "resultado": {
+        "departamento": "técnico",
+        "dept_conf": 0.3905,
+        "urgencia": "alta",
+        "urg_score": 2.29,
+        "reclamacion": false,
+        "reclamacion_p": 0.4338,
+        "latency_ms": 1380.5
+      },
+      "creado": "2026-09-27T22:18:05+00:00"
+    },
+    {
+      "id": "1b1bf9ad13a6",
+      "texto": "El usuario dice que no puede conectar con la aplicacion",
+      "resultado": {
+        "departamento": "técnico",
+        "dept_conf": 0.8323,
+        "urgencia": "alta",
+        "urg_score": 2.26,
+        "reclamacion": false,
+        "reclamacion_p": 0.2672,
+        "latency_ms": 1388.2
+      },
+      "creado": "2026-09-27T22:17:48+00:00"
+    },
+    {
+      "id": "9c72dc04f738",
+      "texto": "Me han cobrado dos veces y quiero una hoja de reclamaciones ya.",
+      "resultado": {
+        "departamento": "devoluciones",
+        "dept_conf": 0.5583,
+        "urgencia": "media",
+        "urg_score": 1.25,
+        "reclamacion": true,
+        "reclamacion_p": 0.5455,
+        "latency_ms": 1787.5
+      },
+      "creado": "2026-09-27T22:14:13+00:00"
+    }
+  ],
+  "phishing": [
+    {
+      "id": "33a2abe493c3",
+      "texto": "Urgente: su cuenta será BLOQUEADA en 24 horas por actividad sospechosa. Verifique su identidad aquí: http://seguridad-cuenta-verificar.tk/login e introduzca su contraseña y tarjeta para evitar el cierre.",
+      "resultado": {
+        "phishing": true,
+        "phishing_p": 0.6638,
+        "sospecha": 64.2,
+        "tipo": "prisa",
+        "latency_ms": 1583.1
+      },
+      "creado": "2026-09-27T22:19:30+00:00"
+    },
+    {
+      "id": "dcca5b35cae8",
+      "texto": "Estimado cliente: su pedido #48291 ha sido enviado. Puede seguirlo en nuestra web con su cuenta. Gracias por su compra. Servicio de envíos.",
+      "resultado": {
+        "phishing": false,
+        "phishing_p": 0.148,
+        "sospecha": 8.9,
+        "tipo": "ninguno",
+        "latency_ms": 1530.4
+      },
+      "creado": "2026-09-27T22:19:24+00:00"
+    },
+    {
+      "id": "3e1737f09c05",
+      "texto": "Urgente: su cuenta sera bloqueada en 24h, verifique en http://seguridad.tk/login con su tarjeta.",
+      "resultado": {
+        "phishing": true,
+        "phishing_p": 0.6207,
+        "sospecha": 69.6,
+        "tipo": "prisa",
+        "latency_ms": 2098.9
+      },
+      "creado": "2026-09-27T22:14:15+00:00"
     }
   ]
 }
