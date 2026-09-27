@@ -1,0 +1,80 @@
+{
+  "candidates": [
+    {
+      "id": "0cb26feda16e",
+      "offer_id": "70f73ec9c6ef",
+      "nombre": "Ana",
+      "texto": "5 anos Python, FastAPI, Docker, ingles B2.",
+      "resultado": {
+        "apto_p": 0.9213,
+        "apto": true,
+        "score": 2.8301,
+        "porcentaje": 70.8,
+        "brechas": [],
+        "detalle_requisitos": {
+          "Python 3 anos": 0.8796,
+          "FastAPI": 0.9006,
+          "Docker": 0.7982
+        },
+        "latency_ms": 3041.4
+      },
+      "evaluado": "2026-09-27T21:21:12+00:00"
+    },
+    {
+      "id": "4e7b9d52b4ef",
+      "offer_id": "70f73ec9c6ef",
+      "nombre": "Luis",
+      "texto": "Disenador grafico, Photoshop, sin programacion.",
+      "resultado": {
+        "apto_p": 0.3993,
+        "apto": false,
+        "score": 1.6521,
+        "porcentaje": 41.3,
+        "brechas": [
+          "Python 3 anos",
+          "FastAPI",
+          "Docker"
+        ],
+        "detalle_requisitos": {
+          "Python 3 anos": 0.3927,
+          "FastAPI": 0.4426,
+          "Docker": 0.3838
+        },
+        "latency_ms": 2612.4
+      },
+      "evaluado": "2026-09-27T21:21:15+00:00"
+    }
+  ],
+  "certs": [
+    {
+      "id": "f1a7d32f313e",
+      "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "filename": "prueba.pdf",
+      "size": 1234,
+      "riesgo_kev": 0.4902,
+      "creado": "2026-09-27T21:21:24+00:00"
+    }
+  ],
+  "offers": [
+    {
+      "id": "70f73ec9c6ef",
+      "titulo": "Backend Python",
+      "descripcion": "API REST",
+      "requisitos": [
+        "Python 3 anos",
+        "FastAPI",
+        "Docker"
+      ],
+      "creada": "2026-09-27T21:21:09+00:00"
+    },
+    {
+      "id": "c133ecc4b5b5",
+      "titulo": "T",
+      "descripcion": "",
+      "requisitos": [
+        "R"
+      ],
+      "creada": "2026-09-27T21:28:33+00:00"
+    }
+  ]
+}

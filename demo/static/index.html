@@ -1,0 +1,55 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KEV Demo — Reclutador y Autenticidad</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:CircularSp,Helvetica Neue,helvetica,arial,sans-serif;background:#121212;color:#fff;
+min-height:100vh;padding:0 20px 60px}
+.topbar{display:flex;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding:20px 4px}
+.logo{width:32px;height:32px;border-radius:50%;background:#1ed760;color:#000;font-weight:700;
+display:flex;align-items:center;justify-content:center;font-size:16px}
+.topbar b{font-size:16px}.topbar span{font-size:12px;color:#b3b3b3}
+main{max-width:860px;margin:0 auto}
+h1{font-size:24px;font-weight:700;margin:12px 0 4px}
+.sub{font-size:14px;color:#b3b3b3}
+#health{display:inline-block;margin:14px 0 4px;padding:6px 16px;border-radius:9999px;font-size:12px;font-weight:700;
+background:#1f1f1f;color:#b3b3b3}
+#health.ok{color:#1ed760}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:640px){.cards{grid-template-columns:1fr}}
+.card{background:#181818;border-radius:8px;padding:24px;box-shadow:rgba(0,0,0,.3) 0px 8px 8px;transition:background .2s}
+.card:hover{background:#252525}
+.kicker{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3}
+.card h2{font-size:18px;font-weight:700;margin:8px 0}
+.card p{font-size:14px;color:#b3b3b3;line-height:1.5}
+.btn{display:inline-block;margin-top:18px;padding:12px 32px;border:none;border-radius:9999px;cursor:pointer;
+text-decoration:none;background:#1ed760;color:#000;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.btn:hover{transform:scale(1.03);background:#3be477}
+</style></head><body>
+<div class="topbar"><div class="logo">K</div><div><b>KEV Demo</b><br><span>Decisiones reales · sin generación de texto</span></div></div>
+<main>
+<h1>Elige una demo</h1>
+<p class="sub">Todo lo que es sí/no o % lo decide el modelo KEV en <code>localhost:9936</code>.</p>
+<div class="wrap"><span id="health">Comprobando KEV…</span></div>
+<div class="cards">
+<div class="card"><div class="kicker">Demo 1 · RRHH</div><h2>Reclutador</h2>
+<p>Oferta + N CVs. KEV responde por candidato: <b>apto sí/no</b>, <b>% cumplimiento</b> y ranking con brechas.</p>
+<a class="btn" href="/static/reclutador.html">Abrir</a></div>
+<div class="card"><div class="kicker">Demo 2 · Confianza</div><h2>Certificado de autenticidad</h2>
+<p>Hash SHA-256 en tu navegador. Veredicto <b>ORIGINAL / ALTERADO</b> + sello PDF descargable.</p>
+<a class="btn" href="/static/verifica.html">Abrir</a></div>
+</div>
+</main>
+<script>fetch('/api/health').then(r=>r.json()).then(h=>{
+const el=document.getElementById('health');
+if(h.kev==='ok'){el.textContent='● KEV conectado ('+h.model+')';el.classList.add('ok')}
+else el.textContent='● KEV no disponible — docker compose up';})</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+if(window.gsap){
+  gsap.from('.topbar',{y:-20,opacity:0,duration:.5,ease:'power2.out'});
+  gsap.from('h1,.sub,#health',{y:16,opacity:0,duration:.5,stagger:.08,delay:.1,ease:'power2.out'});
+  gsap.from('.card',{y:32,opacity:0,duration:.6,stagger:.12,delay:.3,ease:'power3.out'});
+}
+</script>
+</body></html>

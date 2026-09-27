@@ -1,0 +1,174 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demo Reclutador — KEV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:CircularSp,Helvetica Neue,helvetica,arial,sans-serif;background:#121212;color:#fff;min-height:100vh;padding:0 20px 60px}
+.topbar{display:flex;align-items:center;gap:12px;max-width:960px;margin:0 auto;padding:20px 4px}
+.logo{width:32px;height:32px;border-radius:50%;background:#1ed760;color:#000;font-weight:700;display:flex;align-items:center;justify-content:center}
+.topbar b{font-size:16px}.topbar span{font-size:12px;color:#b3b3b3}
+.topbar a{margin-left:auto;font-size:14px;color:#b3b3b3;text-decoration:none}.topbar a:hover{color:#fff}
+main{max-width:960px;margin:0 auto}
+h1{font-size:24px;font-weight:700;margin:12px 0 4px}
+.sub{font-size:14px;color:#b3b3b3}
+.card{background:#181818;border-radius:8px;padding:24px;margin:16px 0}
+.step{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3}
+.card h2{font-size:18px;font-weight:600;margin:6px 0 14px}
+input[type=text],textarea{width:100%;margin:6px 0;padding:12px 16px;border:none;border-radius:4px;
+background:#1f1f1f;color:#fff;font:inherit;font-size:14px;outline:none;
+box-shadow:rgb(18,18,18) 0px 1px 0px,rgb(124,124,124) 0px 0px 0px 1px inset}
+input[type=text]:focus,textarea:focus{box-shadow:rgb(18,18,18) 0px 1px 0px,#fff 0px 0px 0px 1px inset}
+::placeholder{color:#7c7c7c}
+input[type=file]{margin:8px 0;font-size:14px;color:#b3b3b3}
+button{margin:12px 8px 0 0;padding:12px 32px;border:none;border-radius:9999px;cursor:pointer;
+background:#1f1f1f;color:#fff;font-size:14px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+button:hover{background:#2a2a2a;transform:scale(1.02)}
+button.primary{background:#1ed760;color:#000}
+button.primary:hover{background:#3be477}
+button:disabled{opacity:.4;cursor:default;transform:none}
+.req-row{display:flex;gap:8px;margin:6px 0}.req-row input{margin:0;flex:1}
+.req-del{flex:0 0 auto;margin:0 !important;padding:12px 16px !important}
+.add-btn{width:100%}
+#oid{font-size:14px;font-weight:700;color:#1ed760}
+#status{font-size:14px;color:#ffa42b;font-weight:600}
+/* dropzone */
+.dropzone{margin:6px 0;padding:28px 20px;text-align:center;border-radius:8px;cursor:pointer;
+border:1px dashed #4d4d4d;background:#1f1f1f;transition:all .15s}
+.dropzone:hover,.dropzone.over{border-color:#1ed760;background:#252525}
+.dropzone svg{width:32px;height:32px;stroke:#b3b3b3}
+.dropzone p{margin:8px 0 0;font-size:14px;color:#b3b3b3}.dropzone p b{color:#fff}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.mini{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3}
+.hint{font-size:14px;color:#b3b3b3;line-height:1.5}
+/* roster */
+.roster-head{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+#cvCount{font-size:12px;font-weight:700;color:#b3b3b3}
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:12px;padding:0;list-style:none}
+.roster li{position:relative;padding:16px;border-radius:8px;background:#1f1f1f}
+.roster li:hover{background:#2a2a2a}
+.roster .nm{font-size:14px;font-weight:700;display:block;padding-right:28px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:2px;font-size:10.5px;font-weight:600;text-transform:capitalize}
+.b-pend{background:#2a2a2a;color:#b3b3b3}
+.b-si{background:rgba(30,215,96,.15);color:#1ed760}
+.b-no{background:rgba(243,114,127,.15);color:#f3727f}
+.cv-del{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;margin:0 !important;padding:0 !important;font-size:12px}
+/* ranking estilo tracklist */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3;text-align:left;padding:8px 12px;border-bottom:1px solid #2a2a2a}
+td{padding:10px 12px;border-bottom:1px solid #1f1f1f;vertical-align:middle}
+tbody tr{border-radius:4px}tbody tr:hover{background:#2a2a2a}
+td.idx{color:#b3b3b3;width:36px}td .t{font-weight:700}
+.bar{height:6px;border-radius:9999px;background:#2a2a2a;margin-bottom:6px;overflow:hidden;min-width:120px}
+.bar>i{display:block;height:6px;border-radius:9999px;background:#1ed760}
+.pct{font-size:12px;color:#b3b3b3}
+.si{color:#1ed760;font-weight:700;white-space:nowrap}.no{color:#f3727f;font-weight:700;white-space:nowrap}
+.brechas{font-size:12px;color:#b3b3b3}
+</style></head><body>
+<div class="topbar"><div class="logo">K</div><div><b>Reclutador</b><br><span>matching con KEV</span></div><a href="/">← inicio</a></div>
+<main>
+<h1>Oferta y candidatos</h1>
+<p class="sub">La oferta es el 100%. KEV decide por candidato: apto sí/no, % y brechas.</p>
+<div class="card"><div class="step">Paso 1 · Oferta</div><h2>Define el puesto</h2>
+<input type="text" id="titulo" placeholder="Título: Backend Python">
+<textarea id="desc" rows="2" placeholder="Descripción del puesto"></textarea>
+<div id="reqList"></div>
+<button class="add-btn" onclick="addReq()">+ Añadir requisito</button>
+<p></p><button class="primary" onclick="crearOferta()">Guardar oferta</button> <span id="oid"></span></div>
+<div class="card"><div class="step">Paso 2 · Candidatos</div><h2>Sube los CVs <span id="cvCount" style="color:#b3b3b3;font-size:12px"></span></h2>
+<div class="dropzone" id="dz">
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+<p><b>Arrastra aquí los CVs</b> (.txt, .md) o haz clic para elegirlos.<br>Se suben de 1 en 1, encolados.</p>
+<input type="file" id="files" multiple accept=".txt,.md" hidden>
+</div>
+<div class="cols">
+<div><div class="mini">Pegado manual</div>
+<textarea id="cvtexto" rows="4" placeholder="Pega aquí el texto de un CV"></textarea>
+<input type="text" id="cvnombre" placeholder="Nombre del candidato">
+<button onclick="pegarCv()">Añadir CV</button></div>
+<div><div class="mini">Cómo funciona</div>
+<p class="hint">Cada CV se evalúa con KEV por separado (apto sí/no, % sobre la oferta, brechas por requisito). Puedes quitar un candidato con ✕ antes de evaluar.</p></div>
+</div>
+<div class="roster-head"><span class="mini">Lista</span></div>
+<ul class="roster" id="cvs"></ul></div>
+<div class="card"><div class="step">Paso 3 · Ranking</div><h2>Evalúa con KEV</h2>
+<button class="primary" onclick="evaluar()">Evaluar todos</button> <span id="status"></span>
+<p style="height:14px"></p>
+<table id="rank"><thead><tr><th>#</th><th>Título</th><th>¿Apto?</th><th>% match</th><th>Brechas</th></tr></thead><tbody></tbody></table></div>
+</main>
+<script>
+let OID=null;
+function addReq(valor){
+  const row=document.createElement('div'); row.className='req-row';
+  row.innerHTML=`<input type="text" placeholder="Requisito: ej. Python 3 años"><button class="req-del" title="Quitar">✕</button>`;
+  if(valor)row.querySelector('input').value=valor;
+  row.querySelector('.req-del').onclick=()=>row.remove();
+  reqList.appendChild(row);
+  if(window.gsap)gsap.from(row,{x:-16,opacity:0,duration:.25,ease:'power2.out'});
+  return row;
+}
+['Python 3 años','FastAPI','Docker'].forEach(addReq);
+function getReqs(){
+  return [...reqList.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean).slice(0,10);
+}
+async function crearOferta(){
+  const r=await fetch('/api/offers',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({titulo:titulo.value,descripcion:desc.value,
+      requisitos:getReqs()})}).then(r=>r.json());
+  OID=r.id; oid.textContent='Oferta: '+OID; cargar();
+}
+async function cargar(){
+  if(!OID)return;
+  const cvs=await fetch(`/api/offers/${OID}/candidates`).then(r=>r.json());
+  cvCount.textContent=cvs.length?(cvs.length===1?'· 1 CV':'· '+cvs.length+' CVs'):'';
+  cvs.innerHTML=cvs.map(c=>{
+    const b=c.resultado
+      ?(c.resultado.apto?`<span class="badge b-si">Sí · ${c.resultado.porcentaje}%</span>`:`<span class="badge b-no">No · ${c.resultado.porcentaje}%</span>`)
+      :`<span class="badge b-pend">Pendiente</span>`;
+    return `<li><button class="cv-del" title="Quitar" onclick="borrarCv('${c.id}')">✕</button><span class="nm">${c.nombre}</span>${b}</li>`;
+  }).join('');
+  if(window.gsap&&cvs.length)gsap.from('#cvs li',{y:12,opacity:0,duration:.3,stagger:.05,ease:'power2.out'});
+}
+async function borrarCv(cid){
+  await fetch(`/api/offers/${OID}/candidates/${cid}`,{method:'DELETE'});
+  cargar();
+}
+async function subirArchivos(list){
+  for(const f of list){
+    status('Subiendo '+f.name+'…');
+    const texto=await f.text();
+    await fetch(`/api/offers/${OID}/candidates`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nombre:f.name,texto:texto.slice(0,20000)})});
+  }
+  status(''); cargar();
+}
+dz.onclick=()=>files.click();
+files.onchange=e=>{subirArchivos(e.target.files);files.value=''};
+['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over')}));
+dz.addEventListener('drop',e=>subirArchivos(e.dataTransfer.files));
+async function pegarCv(){
+  await fetch(`/api/offers/${OID}/candidates`,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({nombre:cvnombre.value||'sin-nombre',texto:cvtexto.value})});
+  cvtexto.value='';cargar();
+}
+function status(t){document.getElementById('status').textContent=t}
+async function evaluar(){
+  status('Evaluando con KEV, un candidato cada vez…');
+  const r=await fetch(`/api/offers/${OID}/evaluate`,{method:'POST'});
+  if(!r.ok){status('Error: '+(await r.text()).slice(0,300));return}
+  const j=await r.json(); status('');
+  document.querySelector('#rank tbody').innerHTML=j.ranking.map((c,i)=>
+    `<tr><td class="idx">${i+1}</td><td><span class="t">${c.nombre}</span></td>
+     <td class="${c.apto?'si':'no'}">${c.apto?'SÍ':'NO'} · ${c.apto_p}</td>
+     <td><div class="bar"><i style="width:${c.porcentaje}%"></i></div><span class="pct">${c.porcentaje}%</span></td>
+     <td class="brechas">${c.brechas.length?c.brechas.join(' · '):'—'}</td></tr>`).join('');
+  if(window.gsap)gsap.from('#rank tbody tr',{x:-16,opacity:0,duration:.35,stagger:.07,ease:'power2.out'});
+  cargar();
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+if(window.gsap)gsap.from('.card',{y:28,opacity:0,duration:.55,stagger:.12,ease:'power3.out'});
+</script>
+</body></html>

@@ -11,6 +11,22 @@ services:
       - hf-cache:/root/.cache/huggingface
     restart: unless-stopped
 
+  demo:
+    build: ./demo
+    container_name: JEV-DEMO
+    ports:
+      - "${DEMO_PORT:-8010}:8010"
+    environment:
+      - KEV_URL=http://kev-api:9936
+      - PORT=8010
+      - DATA_DIR=/app/data
+    volumes:
+      # La "BBDD" demo: un JSON en disco, persiste entre reinicios
+      - ./demo/data:/app/data
+    depends_on:
+      - kev-api
+    restart: unless-stopped
+
     # ----------------------------------------------------
     # LÍMITES DE MEMORIA (AJUSTAR SEGÚN EL MODELO DEL .ENV)
     # ----------------------------------------------------
