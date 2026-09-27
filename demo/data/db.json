@@ -1,80 +1,236 @@
 {
   "candidates": [
     {
-      "id": "0cb26feda16e",
-      "offer_id": "70f73ec9c6ef",
-      "nombre": "Ana",
-      "texto": "5 anos Python, FastAPI, Docker, ingles B2.",
+      "id": "c88559cf43d8",
+      "offer_id": "demo-backend",
+      "nombre": "cv_adrian_gomez_erp.pdf",
+      "texto": "Adrián Gómez\nConsultor Senior ERP & Sistemas de Gestión\nEmail: adrian.gomez@email.com | Teléfono: +34 612 345 678 | Ubicación: Madrid, España\nPERFIL PROFESIONAL\nEspecialista en implantación, migración y optimización de sistemas ERP (SAP, Odoo, Dynamics 365). Experiencia\nconsolidada en alineación de procesos de negocio con arquitectura tecnológica corporativa.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: SAP S/4HANA  Odoo  Microsoft Dynamics 365  PL/SQL  PostgreSQL  Gestión de\nProcesos (BPM)  ABAP  Integración de Sistemas\nEXPERIENCIA LABORAL\nConsultor Principal ERP — TechSolutions Consulting\n2021 - Presente\nLiderazgo en la implementación de SAP S/4HANA y Odoo Enterprise para empresas del sector industrial y logístico.\nReducción del 25% en tiempos de proceso operativo.\nAnalista Funcional ERP — Global Enterprise Systems\n2018 - 2021\nDiseño de flujos de trabajo en Microsoft Dynamics 365, integración con pasarelas de pago y sistemas CRM externos.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería Informática - Universidad Politécnica de Madrid (2014 - 2018)",
       "resultado": {
-        "apto_p": 0.9213,
+        "apto_p": 0.8829,
         "apto": true,
-        "score": 2.8301,
-        "porcentaje": 70.8,
+        "score": 2.9394,
+        "porcentaje": 73.5,
         "brechas": [],
         "detalle_requisitos": {
-          "Python 3 anos": 0.8796,
-          "FastAPI": 0.9006,
-          "Docker": 0.7982
+          "Python 3 años": 0.859,
+          "FastAPI": 0.7181,
+          "Docker": 0.6884,
+          "Inglés B2": 0.5013
         },
-        "latency_ms": 3041.4
+        "latency_ms": 4248.4
       },
-      "evaluado": "2026-09-27T21:21:12+00:00"
+      "evaluado": "2026-09-27T21:55:04+00:00"
     },
     {
-      "id": "4e7b9d52b4ef",
-      "offer_id": "70f73ec9c6ef",
-      "nombre": "Luis",
-      "texto": "Disenador grafico, Photoshop, sin programacion.",
+      "id": "4abb14ad7412",
+      "offer_id": "demo-backend",
+      "nombre": "cv_alvaro_castillo_ciberseguridad.pdf",
+      "texto": "Álvaro Castillo\nEspecialista en Ciberseguridad & Pentesting\nEmail: alvaro.castillo@email.com | Teléfono: +34 667 890 123 | Ubicación: Bilbao, España\nPERFIL PROFESIONAL\nProfesional de la seguridad informática enfocado en auditorías ofensivas (Red Team), hacking ético, gestión de\nvulnerabilidades y hardening de infraestructuras corporativas.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Pentesting Web & Red  Burp Suite  Metasploit  Network Analysis (Wireshark)  Hardening\nLinux/Windows  ISO 27001  Python / Bash Scripting  SIEM (Splunk)\nEXPERIENCIA LABORAL\nCybersecurity Analyst & Pentester — SecureShield Tech\n2020 - Presente\nEjecución de auditorías de penetración web, API y red interna para clientes del sector bancario y gubernamental.\nRemediación de vulnerabilidades criticas.\nAdministrador de Seguridad de Redes — NetGuard Systems\n2017 - 2020\nMonitorización SIEM en tiempo real, gestión de firewalls perimetrales e implantación de normativas ISO 27001.\nEDUCACIÓN Y FORMACIÓN\nMáster en Ciberseguridad - Universidad del País Vasco (2016 - 2017)",
       "resultado": {
-        "apto_p": 0.3993,
-        "apto": false,
-        "score": 1.6521,
-        "porcentaje": 41.3,
+        "apto_p": 0.8424,
+        "apto": true,
+        "score": 2.9385,
+        "porcentaje": 73.5,
         "brechas": [
-          "Python 3 anos",
-          "FastAPI",
-          "Docker"
+          "Inglés B2"
         ],
         "detalle_requisitos": {
-          "Python 3 anos": 0.3927,
-          "FastAPI": 0.4426,
-          "Docker": 0.3838
+          "Python 3 años": 0.8711,
+          "FastAPI": 0.9027,
+          "Docker": 0.6607,
+          "Inglés B2": 0.4829
         },
-        "latency_ms": 2612.4
+        "latency_ms": 4006.9
       },
-      "evaluado": "2026-09-27T21:21:15+00:00"
-    }
-  ],
-  "certs": [
-    {
-      "id": "f1a7d32f313e",
-      "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-      "filename": "prueba.pdf",
-      "size": 1234,
-      "riesgo_kev": 0.4902,
-      "creado": "2026-09-27T21:21:24+00:00"
-    }
-  ],
-  "offers": [
-    {
-      "id": "70f73ec9c6ef",
-      "titulo": "Backend Python",
-      "descripcion": "API REST",
-      "requisitos": [
-        "Python 3 anos",
-        "FastAPI",
-        "Docker"
-      ],
-      "creada": "2026-09-27T21:21:09+00:00"
+      "evaluado": "2026-09-27T21:55:08+00:00"
     },
     {
-      "id": "c133ecc4b5b5",
-      "titulo": "T",
-      "descripcion": "",
+      "id": "fa6d45096d63",
+      "offer_id": "demo-backend",
+      "nombre": "cv_antonio_vega_n8n.pdf",
+      "texto": "Antonio Vega\nEspecialista Senior en n8n & Arquitecto de Integraciones\nEmail: antonio.vega@email.com | Teléfono: +34 690 123 456 | Ubicación: Murcia, España\nPERFIL PROFESIONAL\nExperto en orquestación de flujos de trabajo sin código y bajo código con n8n. Integración de agentes de IA, bases de datos y\nherramientas NoCode para automatización avanzada.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: n8n (Self-hosted & Cloud)  JavaScript / Node.js  Custom n8n Nodes  Webhooks & REST\nAPIs  AI Agents Integration (LangChain/n8n)  PostgreSQL / Redis  Docker  Make / Zapier\nEXPERIENCIA LABORAL\nn8n Integration Architect — NoCode Automation Lab\n2022 - Presente\nDiseño e implantación de más de 100 flujos complejos en n8n self-hosted. Integración de LLMs para procesamiento\ninteligente de correo y clasificación de tickets.\nDesarrollador de Integraciones & Backend — SaaS Connectors\n2019 - 2022\nDesarrollo de nodos personalizados para n8n en TypeScript, conexión con APIs REST/GraphQL y mantenimiento de\narquitecturas event-driven.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería del Software - Universidad de Murcia (2015 - 2019)",
+      "resultado": {
+        "apto_p": 0.8457,
+        "apto": true,
+        "score": 2.8243,
+        "porcentaje": 70.6,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.8519,
+          "FastAPI": 0.8681,
+          "Docker": 0.8503,
+          "Inglés B2": 0.4438
+        },
+        "latency_ms": 4207.9
+      },
+      "evaluado": "2026-09-27T21:55:13+00:00"
+    },
+    {
+      "id": "cf16164b420f",
+      "offer_id": "demo-backend",
+      "nombre": "cv_astrid_lindqvist_data.pdf",
+      "texto": "Astrid Lindqvist\nLead Data Engineer & Business Intelligence\nEmail: astrid.lindqvist@email.com | Teléfono: +34 656 789 012 | Ubicación: Málaga, España\nPERFIL PROFESIONAL\nArquitecta de soluciones de datos masivos. Diseño e implementación de pipelines ETL/ELT eficientes, almacenes de datos\ncloud y paneles analíticos en tiempo real.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Python  SQL  Apache Spark  Snowflake  dbt  Airflow  AWS (S3, Redshift)  PowerBI /\nTableau\nEXPERIENCIA LABORAL\nSenior Data Engineer — Cloud Data Platforms\n2021 - Presente\nConstrucción de pipelines de datos masivos con PySpark y dbt sobre Snowflake, procesando más de 10M de eventos diarios.\nBusiness Intelligence Specialist — Global Analytics Corp\n2018 - 2021\nModelado de datos dimensional (Star Schema), optimización de consultas SQL complejas y despliegue de tableros directivos\nen Power BI.\nEDUCACIÓN Y FORMACIÓN\nGrado en Matemáticas y Estadística - Universidad de Málaga (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.901,
+        "apto": true,
+        "score": 2.789,
+        "porcentaje": 69.7,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.8954,
+          "FastAPI": 0.7861,
+          "Docker": 0.6953,
+          "Inglés B2": 0.4782
+        },
+        "latency_ms": 3902.6
+      },
+      "evaluado": "2026-09-27T21:55:17+00:00"
+    },
+    {
+      "id": "7e93a12e578b",
+      "offer_id": "demo-backend",
+      "nombre": "cv_carlos_roldan_linux.pdf",
+      "texto": "Carlos Roldán\nAdministrador Senior de Sistemas Linux & DevOps\nEmail: carlos.roldan@email.com | Teléfono: +34 678 901 234 | Ubicación: Zaragoza, España\nPERFIL PROFESIONAL\nSysadmin Linux con amplia experiencia en alta disponibilidad, virtualización, automatización de infraestructura como código\n(IaC) y entornos containerizados.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Debian / RedHat / Ubuntu  Bash / Python  Ansible  Docker & Kubernetes  Terraform  Nginx\n/ HAProxy  Prometheus & Grafana  CI/CD (GitLab CI)\nEXPERIENCIA LABORAL\nSenior Linux Systems Administrator — Infrastructure Cloud Services\n2019 - Presente\nAdministración de clusters Kubernetes y servidores RHEL/Debian con 99.99% de uptime. Automatización de despliegues con\nAnsible y Terraform.\nAdministrador de Sistemas Unix/Linux — DataCenter Operations\n2015 - 2019\nGestión de servidores Web, bases de datos MySQL/PostgreSQL y configuración de firewalls/VPNs a nivel de kernel.\nEDUCACIÓN Y FORMACIÓN\nGrado Superior en Administración de Sistemas Informáticos en Red (ASIR) (2013 - 2015)",
+      "resultado": {
+        "apto_p": 0.8885,
+        "apto": true,
+        "score": 2.8271,
+        "porcentaje": 70.7,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.879,
+          "FastAPI": 0.8586,
+          "Docker": 0.8689,
+          "Inglés B2": 0.4364
+        },
+        "latency_ms": 4024.8
+      },
+      "evaluado": "2026-09-27T21:55:21+00:00"
+    },
+    {
+      "id": "eba6ea4602a7",
+      "offer_id": "demo-backend",
+      "nombre": "cv_jaime_morales_robotica.pdf",
+      "texto": "Jaime Morales\nIngeniero en Robótica & Sistemas Autónomos\nEmail: jaime.morales@email.com | Teléfono: +34 634 567 890 | Ubicación: Valencia, España\nPERFIL PROFESIONAL\nIngeniero especializado en robótica industrial y móvil, diseño de algoritmos de navegación (SLAM), control cinemático y\nprogramación en tiempo real con ROS/ROS2.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: ROS / ROS2  C++  Python  Kinematics & Dynamics  SLAM & Navigation  Gazebo / Isaac\nSim  Embedded C  LiDAR & Computer Vision\nEXPERIENCIA LABORAL\nRobotics Engineer — Automation & Robotics Tech\n2021 - Presente\nDesarrollo de navegación autónoma para robots AGV en almacenes logísticos mediante ROS2 y SLAM 3D. Integración de\nsensores sensores LiDAR y cámaras de profundidad.\nIngeniero de Control y Microcontroladores — RoboTech Solutions\n2018 - 2021\nProgramación de sistemas embebidos C/C++ para control de servomotores y brazos robóticos articulados de 6 ejes.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería Robótica - Universitat Politècnica de València (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.8763,
+        "apto": true,
+        "score": 3.0192,
+        "porcentaje": 75.5,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.908,
+          "FastAPI": 0.8145,
+          "Docker": 0.6732,
+          "Inglés B2": 0.4531
+        },
+        "latency_ms": 4009.5
+      },
+      "evaluado": "2026-09-27T21:55:25+00:00"
+    },
+    {
+      "id": "a1a1879d35c6",
+      "offer_id": "demo-backend",
+      "nombre": "cv_josemi_navarro_ai.pdf",
+      "texto": "Josemi Navarro\nIngeniero de Inteligencia Artificial & LLMs\nEmail: josemi.navarro@email.com | Teléfono: +34 623 456 789 | Ubicación: Barcelona, España\nPERFIL PROFESIONAL\nIngeniero R&D; enfocado en el desarrollo e integración de modelos de lenguaje (LLMs), arquitecturas RAG, visión por\ncomputador y redes neuronales profundas para soluciones empresariales escalables.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Python  PyTorch  TensorFlow  LangChain / LlamaIndex  Fine-tuning & RAG  OpenAI /\nAnthropic APIs  Docker  FastAPI\nEXPERIENCIA LABORAL\nAI Software Engineer — Cognitive Tech Lab\n2022 - Presente\nDesarrollo e implementación de agentes autónomos y sistemas RAG enterprise sobre datos vectoriales con Qdrant y\nPinecone. Optimización de latencia en modelos local Llama 3.\nData Scientist & Machine Learning Specialist — DataInsight Corp\n2019 - 2022\nEntrenamiento de modelos predictivos y visión por computador para detección de anomalías en tiempo real.\nEDUCACIÓN Y FORMACIÓN\nMáster en Inteligencia Artificial - Universidad de Barcelona (2018 - 2019)",
+      "resultado": {
+        "apto_p": 0.8948,
+        "apto": true,
+        "score": 2.9693,
+        "porcentaje": 74.2,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.9119,
+          "FastAPI": 0.9249,
+          "Docker": 0.855,
+          "Inglés B2": 0.4578
+        },
+        "latency_ms": 3904.3
+      },
+      "evaluado": "2026-09-27T21:55:29+00:00"
+    },
+    {
+      "id": "5955454a7937",
+      "offer_id": "demo-backend",
+      "nombre": "cv_laura_benitez_diseno_web.pdf",
+      "texto": "Laura Benítez\nDiseñadora UX/UI & Desarrolladora Frontend\nEmail: laura.benitez@email.com | Teléfono: +34 645 678 901 | Ubicación: Sevilla, España\nPERFIL PROFESIONAL\nEspecialista en la creación de experiencias digitales intuitivas y atractivas. Combinación de investigación de usuario,\nsistemas de diseño visual y desarrollo frontend moderno.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Figma  UI/UX Research  Design Systems  HTML5 / CSS3 / Tailwind  TypeScript  React /\nNext.js  Prototipado interactivo  Accesibilidad (WCAG)\nEXPERIENCIA LABORAL\nLead Product Designer & Frontend Developer — Creative Digital Studio\n2020 - Presente\nDiseño y desarrollo del sistema de diseño corporativo accesible. Creación de prototipos de alta fidelidad en Figma e\nimplementación frontend con React y Tailwind.\nDiseñadora Web & UX — Interactive Media Agency\n2017 - 2020\nInvestigación con usuarios, mapas de experiencia, wireframing y rediseño completo de plataformas e-commerce.\nEDUCACIÓN Y FORMACIÓN\nGrado en Diseño Digital y Multimedia - Universidad de Sevilla (2013 - 2017)",
+      "resultado": {
+        "apto_p": 0.8374,
+        "apto": true,
+        "score": 2.878,
+        "porcentaje": 72.0,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.8477,
+          "FastAPI": 0.8776,
+          "Docker": 0.669,
+          "Inglés B2": 0.477
+        },
+        "latency_ms": 4059.1
+      },
+      "evaluado": "2026-09-27T21:55:33+00:00"
+    },
+    {
+      "id": "00434ffdb21d",
+      "offer_id": "demo-backend",
+      "nombre": "cv_sergio_iglesias_automatizaciones.pdf",
+      "texto": "Sergio Iglesias\nEspecialista en Automatización (RPA & Integration)\nEmail: sergio.iglesias@email.com | Teléfono: +34 689 012 345 | Ubicación: Vigo, España\nPERFIL PROFESIONAL\nIngeniero enfocado en la eliminación de tareas repetitivas y optimización de workflows empresariales mediante RPA, scripts a\nmedida e integración de servicios SaaS.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: UiPath  Power Automate  Python Scripting  REST APIs / Webhooks  Selenium / Playwright \nZapier / Make  SQL  Process Mining\nEXPERIENCIA LABORAL\nAutomation Specialist & RPA Developer — Process Automation Studio\n2021 - Presente\nDiseño e implementación de bots UiPath y Power Automate para automatización de facturación y extracción de datos ERP.\nAhorro de +1500 horas anuales.\nIntegrador de Procesos IT — Workflow Optimization Co\n2018 - 2021\nDesarrollo de conectores personalizados en Python y webhooks para la sincronización fluida entre CRMs, ERPs y pasarelas\nde pago.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería de Organización Industrial - Universidad de Vigo (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.8854,
+        "apto": true,
+        "score": 2.8401,
+        "porcentaje": 71.0,
+        "brechas": [
+          "Inglés B2"
+        ],
+        "detalle_requisitos": {
+          "Python 3 años": 0.8753,
+          "FastAPI": 0.8388,
+          "Docker": 0.6325,
+          "Inglés B2": 0.4507
+        },
+        "latency_ms": 3993.3
+      },
+      "evaluado": "2026-09-27T21:55:37+00:00"
+    }
+  ],
+  "certs": [],
+  "offers": [
+    {
+      "creada": "2026-09-27T00:00:00+00:00",
+      "descripcion": "API REST con FastAPI y despliegue con Docker. Equipo de 5 personas.",
+      "id": "demo-backend",
       "requisitos": [
-        "R"
+        "Python 3 años",
+        "FastAPI",
+        "Docker",
+        "Inglés B2"
       ],
-      "creada": "2026-09-27T21:28:33+00:00"
+      "titulo": "Backend Python Senior"
+    },
+    {
+      "creada": "2026-09-27T00:00:00+00:00",
+      "descripcion": "Producto digital: design system, prototipado y research con usuarios.",
+      "id": "demo-ux",
+      "requisitos": [
+        "Figma 2 años",
+        "Design systems",
+        "Prototipado",
+        "Research con usuarios"
+      ],
+      "titulo": "Diseñador/a UX"
     }
   ]
 }

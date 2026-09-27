@@ -15,6 +15,7 @@ Run compose (servicio demo):             docker compose up --build  -> demo en :
 """
 import asyncio
 import hashlib
+import io
 import json
 import os
 import threading
@@ -24,7 +25,7 @@ import urllib.request
 import uuid
 from datetime import datetime, timezone
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -153,6 +154,41 @@ def add_candidate(oid: str, cv: CvIn):
 def list_candidates(oid: str):
     db = _db_read()
     return [c for c in db["candidates"] if c["offer_id"] == oid]
+
+
+@app.post("/api/offers/{oid}/candidates/upload")
+def upload_candidate(oid: str, file: UploadFile = File(...)):
+    """Subida de fichero (.pdf con texto extraible, .txt, .md). El texto se
+    extrae en el servidor; el envio desde el navegador sigue siendo 1 en 1."""
+    raw = file.file.read()
+    if len(raw) > 10 * 1024 * 1024:
+        raise HTTPException(422, "fichero demasiado grande (max 10 MB)")
+    nombre = file.filename or "sin-nombre"
+    ext = nombre.rsplit(".", 1)[-1].lower() if "." in nombre else ""
+    if ext == "pdf":
+        try:
+            from pypdf import PdfReader
+            reader = PdfReader(io.BytesIO(raw))
+            texto = "\n".join((p.extract_text() or "") for p in reader.pages[:20]).strip()
+        except Exception as e:
+            raise HTTPException(422, f"no se pudo leer el PDF: {str(e)[:200]}")
+        if not texto:
+            raise HTTPException(422, "el PDF no contiene texto extraible (¿es escaneado?)")
+    elif ext in ("txt", "md", "text", ""):
+        texto = raw.decode("utf-8", errors="replace").strip()
+        if not texto:
+            raise HTTPException(422, "el fichero esta vacio")
+    else:
+        raise HTTPException(422, f"extension .{ext} no soportada (usa .pdf, .txt o .md)")
+    cid = uuid.uuid4().hex[:12]
+
+    def go(db):
+        if not any(o["id"] == oid for o in db["offers"]):
+            raise HTTPException(404, "oferta no existe")
+        db["candidates"].append({"id": cid, "offer_id": oid, "nombre": nombre,
+                                 "texto": texto[:20000], "resultado": None, "evaluado": None})
+        return {"id": cid, "chars": len(texto[:20000])}
+    return _db_update(go)
 
 
 @app.delete("/api/offers/{oid}/candidates/{cid}")
@@ -381,6 +417,15 @@ def cert_pdf(cid: str):
 
 
 # ---------- Estatico ----------
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    svg = (b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">'
+           b'<circle cx="16" cy="16" r="16" fill="#1ed760"/>'
+           b'<text x="16" y="23" font-size="17" font-family="Arial" font-weight="bold" '
+           b'text-anchor="middle" fill="#000">K</text></svg>')
+    return Response(svg, media_type="image/svg+xml")
+
+
 @app.get("/", include_in_schema=False)
 def index():
     return FileResponse(os.path.join(STATIC, "index.html"))

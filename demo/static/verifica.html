@@ -52,7 +52,7 @@ a{color:#539df5}
 <button class="primary" onclick="registrar()">Registrar huella</button>
 <p id="reg"></p></div>
 <div class="card"><div class="step">Paso 3 · Verificación</div><h2>¿Es idéntico al original?</h2>
-<input type="text" id="cid" placeholder="ID certificado">
+<input type="text" id="cid" placeholder="ID certificado" data-typing="ID certificado|Ej. f1a7d32f313e">
 <button class="primary" onclick="verificar()">Verificar</button>
 <p id="ver"></p></div>
 </main>
@@ -82,6 +82,25 @@ async function verificar(){
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+// máquina de escribir en los placeholders: solo si el campo está vacío y sin foco
+function typePlaceholder(el){
+  const phrases=(el.dataset.typing||'').split('|').filter(Boolean);
+  if(!phrases.length||el._typer)return; el._typer=true;
+  let pi=0,txt='',del=false;
+  (function step(){
+    if(document.activeElement===el||el.value){setTimeout(step,800);return}
+    const full=phrases[pi];
+    txt=del?full.slice(0,txt.length-1):full.slice(0,txt.length+1);
+    el.setAttribute('placeholder',txt);
+    let d=del?28:55;
+    if(!del&&txt===full){d=1500;del=true}
+    else if(del&&txt===''){del=false;pi=(pi+1)%phrases.length;d=450}
+    setTimeout(step,d);
+  })();
+}
+document.querySelectorAll('[data-typing]').forEach(typePlaceholder);
+</script>
 <script>
 if(window.gsap)gsap.from('.card',{y:28,opacity:0,duration:.55,stagger:.12,ease:'power3.out'});
 </script>

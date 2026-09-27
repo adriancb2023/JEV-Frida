@@ -17,6 +17,9 @@ h1{font-size:24px;font-weight:700;margin:12px 0 4px}
 input[type=text],textarea{width:100%;margin:6px 0;padding:12px 16px;border:none;border-radius:4px;
 background:#1f1f1f;color:#fff;font:inherit;font-size:14px;outline:none;
 box-shadow:rgb(18,18,18) 0px 1px 0px,rgb(124,124,124) 0px 0px 0px 1px inset}
+select{width:100%;margin:6px 0;padding:12px 16px;border:none;border-radius:4px;
+background:#1f1f1f;color:#fff;font:inherit;font-size:14px;outline:none;cursor:pointer;
+box-shadow:rgb(18,18,18) 0px 1px 0px,rgb(124,124,124) 0px 0px 0px 1px inset}
 input[type=text]:focus,textarea:focus{box-shadow:rgb(18,18,18) 0px 1px 0px,#fff 0px 0px 0px 1px inset}
 ::placeholder{color:#7c7c7c}
 input[type=file]{margin:8px 0;font-size:14px;color:#b3b3b3}
@@ -44,6 +47,15 @@ border:1px dashed #4d4d4d;background:#1f1f1f;transition:all .15s}
 /* roster */
 .roster-head{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
 #cvCount{font-size:12px;font-weight:700;color:#b3b3b3}
+/* cola de subida visible */
+.queue{list-style:none;padding:0;margin:12px 0 0}
+.queue li{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:6px 0;border-radius:8px;
+background:#1f1f1f;font-size:13px}
+.queue .qn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qbadge{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.q-wait{color:#b3b3b3}.q-up{color:#ffa42b}.q-ok{color:#1ed760}.q-err{color:#f3727f}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid #2a2a2a;border-top-color:#1ed760;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
 .roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:12px;padding:0;list-style:none}
 .roster li{position:relative;padding:16px;border-radius:8px;background:#1f1f1f}
 .roster li:hover{background:#2a2a2a}
@@ -70,27 +82,31 @@ td.idx{color:#b3b3b3;width:36px}td .t{font-weight:700}
 <h1>Oferta y candidatos</h1>
 <p class="sub">La oferta es el 100%. KEV decide por candidato: apto sí/no, % y brechas.</p>
 <div class="card"><div class="step">Paso 1 · Oferta</div><h2>Define el puesto</h2>
-<input type="text" id="titulo" placeholder="Título: Backend Python">
-<textarea id="desc" rows="2" placeholder="Descripción del puesto"></textarea>
+<div class="mini">Ofertas guardadas (reutilizar)</div>
+<select id="offerSel"><option value="">— Nueva oferta —</option></select>
+<input type="text" id="titulo" placeholder="Título: Backend Python" data-typing="Título: Backend Python|Título: Diseñadora UX|Título: DevOps Senior">
+<textarea id="desc" rows="2" placeholder="Descripción del puesto" data-typing="Descripción del puesto|Equipo y responsabilidades|Salario y ubicación"></textarea>
 <div id="reqList"></div>
 <button class="add-btn" onclick="addReq()">+ Añadir requisito</button>
 <p></p><button class="primary" onclick="crearOferta()">Guardar oferta</button> <span id="oid"></span></div>
 <div class="card"><div class="step">Paso 2 · Candidatos</div><h2>Sube los CVs <span id="cvCount" style="color:#b3b3b3;font-size:12px"></span></h2>
 <div class="dropzone" id="dz">
 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
-<p><b>Arrastra aquí los CVs</b> (.txt, .md) o haz clic para elegirlos.<br>Se suben de 1 en 1, encolados.</p>
-<input type="file" id="files" multiple accept=".txt,.md" hidden>
+<p><b>Arrastra aquí los CVs en PDF</b> o haz clic para elegirlos.<br>También vale .txt y .md · se suben de 1 en 1, encolados.</p>
+<input type="file" id="files" multiple accept=".txt,.md,.pdf" hidden>
 </div>
 <div class="cols">
 <div><div class="mini">Pegado manual</div>
-<textarea id="cvtexto" rows="4" placeholder="Pega aquí el texto de un CV"></textarea>
-<input type="text" id="cvnombre" placeholder="Nombre del candidato">
+<textarea id="cvtexto" rows="4" placeholder="Pega aquí el texto de un CV" data-typing="Pega aquí el texto de un CV|Nombre, experiencia, habilidades…"></textarea>
+<input type="text" id="cvnombre" placeholder="Nombre del candidato" data-typing="Nombre del candidato|Ej. Ana García">
 <button onclick="pegarCv()">Añadir CV</button></div>
 <div><div class="mini">Cómo funciona</div>
 <p class="hint">Cada CV se evalúa con KEV por separado (apto sí/no, % sobre la oferta, brechas por requisito). Puedes quitar un candidato con ✕ antes de evaluar.</p></div>
 </div>
 <div class="roster-head"><span class="mini">Lista</span></div>
-<ul class="roster" id="cvs"></ul></div>
+<ul class="roster" id="cvs"></ul>
+<div class="roster-head"><span class="mini">Cola de subida</span><span class="mini" id="qCount"></span></div>
+<ul class="queue" id="queue"></ul></div>
 <div class="card"><div class="step">Paso 3 · Ranking</div><h2>Evalúa con KEV</h2>
 <button class="primary" onclick="evaluar()">Evaluar todos</button> <span id="status"></span>
 <p style="height:14px"></p>
@@ -98,16 +114,32 @@ td.idx{color:#b3b3b3;width:36px}td .t{font-weight:700}
 </main>
 <script>
 let OID=null;
+let OFERTAS=[];
+async function cargarOfertas(sel){
+  OFERTAS=await fetch('/api/offers').then(r=>r.json());
+  offerSel.innerHTML='<option value="">— Nueva oferta —</option>'+
+    OFERTAS.map(o=>`<option value="${o.id}">${o.titulo} (${o.requisitos.length} req.)</option>`).join('');
+  if(sel)offerSel.value=sel;
+}
+offerSel.onchange=()=>{
+  const o=OFERTAS.find(x=>x.id===offerSel.value);
+  if(!o)return;
+  titulo.value=o.titulo; desc.value=o.descripcion||'';
+  reqList.innerHTML=''; o.requisitos.forEach(addReq);
+  OID=o.id; oid.textContent='Oferta: '+OID; cargar();
+};
+cargarOfertas();
 function addReq(valor){
   const row=document.createElement('div'); row.className='req-row';
-  row.innerHTML=`<input type="text" placeholder="Requisito: ej. Python 3 años"><button class="req-del" title="Quitar">✕</button>`;
+  row.innerHTML=`<input type="text" placeholder="Requisito: ej. Python 3 años" data-typing="Requisito: ej. Python 3 años|Requisito: ej. Inglés B2|Requisito: ej. Docker"><button class="req-del" title="Quitar">✕</button>`;
   if(valor)row.querySelector('input').value=valor;
   row.querySelector('.req-del').onclick=()=>row.remove();
   reqList.appendChild(row);
+  typePlaceholder(row.querySelector('input'));
   if(window.gsap)gsap.from(row,{x:-16,opacity:0,duration:.25,ease:'power2.out'});
   return row;
 }
-['Python 3 años','FastAPI','Docker'].forEach(addReq);
+addReq();
 function getReqs(){
   return [...reqList.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean).slice(0,10);
 }
@@ -115,7 +147,7 @@ async function crearOferta(){
   const r=await fetch('/api/offers',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({titulo:titulo.value,descripcion:desc.value,
       requisitos:getReqs()})}).then(r=>r.json());
-  OID=r.id; oid.textContent='Oferta: '+OID; cargar();
+  OID=r.id; oid.textContent='Oferta: '+OID; cargarOfertas(OID); cargar();
 }
 async function cargar(){
   if(!OID)return;
@@ -134,13 +166,32 @@ async function borrarCv(cid){
   cargar();
 }
 async function subirArchivos(list){
-  for(const f of list){
-    status('Subiendo '+f.name+'…');
-    const texto=await f.text();
-    await fetch(`/api/offers/${OID}/candidates`,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({nombre:f.name,texto:texto.slice(0,20000)})});
+  const files=[...list];
+  if(!files.length)return;
+  // cola visible: una fila por archivo con su estado
+  queue.innerHTML=files.map((f,i)=>`<li id="q${i}"><span class="qn">${i+1}/${files.length} · ${f.name}</span><span class="qbadge q-wait">En cola</span></li>`).join('');
+  qCount.textContent='0/'+files.length;
+  let done=0;
+  for(let i=0;i<files.length;i++){
+    const row=document.getElementById('q'+i);
+    row.querySelector('.qbadge').outerHTML='<span class="spin"></span><span class="qbadge q-up">Subiendo</span>';
+    status(`Subiendo ${i+1}/${files.length}: ${files[i].name}…`);
+    try{
+      const fd=new FormData(); fd.append('file',files[i]);
+      const r=await fetch(`/api/offers/${OID}/candidates/upload`,{method:'POST',body:fd});
+      if(!r.ok)throw new Error((await r.text()).slice(0,200));
+      const info=await r.json();
+      row.querySelector('.spin').remove();
+      row.querySelector('.qbadge').outerHTML=`<span class="qbadge q-ok">OK · ${info.chars??'?'} car.</span>`;
+    }catch(err){
+      const s=row.querySelector('.spin'); if(s)s.remove();
+      row.querySelector('.qbadge').outerHTML=`<span class="qbadge q-err">Error</span>`;
+      status('Error con '+files[i].name+': '+err.message); return;
+    }
+    done++; qCount.textContent=done+'/'+files.length;
   }
   status(''); cargar();
+  setTimeout(()=>{queue.innerHTML='';qCount.textContent='';},4000);
 }
 dz.onclick=()=>files.click();
 files.onchange=e=>{subirArchivos(e.target.files);files.value=''};
@@ -153,6 +204,23 @@ async function pegarCv(){
   cvtexto.value='';cargar();
 }
 function status(t){document.getElementById('status').textContent=t}
+// máquina de escribir en los placeholders: solo si el campo está vacío y sin foco
+function typePlaceholder(el){
+  const phrases=(el.dataset.typing||'').split('|').filter(Boolean);
+  if(!phrases.length||el._typer)return; el._typer=true;
+  let pi=0,txt='',del=false;
+  (function step(){
+    if(document.activeElement===el||el.value){setTimeout(step,800);return}
+    const full=phrases[pi];
+    txt=del?full.slice(0,txt.length-1):full.slice(0,txt.length+1);
+    el.setAttribute('placeholder',txt);
+    let d=del?28:55;
+    if(!del&&txt===full){d=1500;del=true}
+    else if(del&&txt===''){del=false;pi=(pi+1)%phrases.length;d=450}
+    setTimeout(step,d);
+  })();
+}
+document.querySelectorAll('[data-typing]').forEach(typePlaceholder);
 async function evaluar(){
   status('Evaluando con KEV, un candidato cada vez…');
   const r=await fetch(`/api/offers/${OID}/evaluate`,{method:'POST'});
