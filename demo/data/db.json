@@ -204,6 +204,206 @@
         "latency_ms": 3993.3
       },
       "evaluado": "2026-09-27T21:55:37+00:00"
+    },
+    {
+      "id": "84e9f8d8f7f1",
+      "offer_id": "demo-ux",
+      "nombre": "cv_adrian_gomez_erp.pdf",
+      "texto": "Adrián Gómez\nConsultor Senior ERP & Sistemas de Gestión\nEmail: adrian.gomez@email.com | Teléfono: +34 612 345 678 | Ubicación: Madrid, España\nPERFIL PROFESIONAL\nEspecialista en implantación, migración y optimización de sistemas ERP (SAP, Odoo, Dynamics 365). Experiencia\nconsolidada en alineación de procesos de negocio con arquitectura tecnológica corporativa.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: SAP S/4HANA  Odoo  Microsoft Dynamics 365  PL/SQL  PostgreSQL  Gestión de\nProcesos (BPM)  ABAP  Integración de Sistemas\nEXPERIENCIA LABORAL\nConsultor Principal ERP — TechSolutions Consulting\n2021 - Presente\nLiderazgo en la implementación de SAP S/4HANA y Odoo Enterprise para empresas del sector industrial y logístico.\nReducción del 25% en tiempos de proceso operativo.\nAnalista Funcional ERP — Global Enterprise Systems\n2018 - 2021\nDiseño de flujos de trabajo en Microsoft Dynamics 365, integración con pasarelas de pago y sistemas CRM externos.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería Informática - Universidad Politécnica de Madrid (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.8602,
+        "apto": true,
+        "score": 2.9305,
+        "porcentaje": 73.3,
+        "brechas": [
+          "Figma 2 años"
+        ],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.4957,
+          "Design systems": 0.6404,
+          "Prototipado": 0.6121,
+          "Research con usuarios": 0.5571
+        },
+        "latency_ms": 4117.1
+      },
+      "evaluado": "2026-09-27T21:58:29+00:00"
+    },
+    {
+      "id": "086516f399bd",
+      "offer_id": "demo-ux",
+      "nombre": "cv_alvaro_castillo_ciberseguridad.pdf",
+      "texto": "Álvaro Castillo\nEspecialista en Ciberseguridad & Pentesting\nEmail: alvaro.castillo@email.com | Teléfono: +34 667 890 123 | Ubicación: Bilbao, España\nPERFIL PROFESIONAL\nProfesional de la seguridad informática enfocado en auditorías ofensivas (Red Team), hacking ético, gestión de\nvulnerabilidades y hardening de infraestructuras corporativas.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Pentesting Web & Red  Burp Suite  Metasploit  Network Analysis (Wireshark)  Hardening\nLinux/Windows  ISO 27001  Python / Bash Scripting  SIEM (Splunk)\nEXPERIENCIA LABORAL\nCybersecurity Analyst & Pentester — SecureShield Tech\n2020 - Presente\nEjecución de auditorías de penetración web, API y red interna para clientes del sector bancario y gubernamental.\nRemediación de vulnerabilidades criticas.\nAdministrador de Seguridad de Redes — NetGuard Systems\n2017 - 2020\nMonitorización SIEM en tiempo real, gestión de firewalls perimetrales e implantación de normativas ISO 27001.\nEDUCACIÓN Y FORMACIÓN\nMáster en Ciberseguridad - Universidad del País Vasco (2016 - 2017)",
+      "resultado": {
+        "apto_p": 0.5159,
+        "apto": true,
+        "score": 2.8144,
+        "porcentaje": 70.4,
+        "brechas": [],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5309,
+          "Design systems": 0.7266,
+          "Prototipado": 0.6441,
+          "Research con usuarios": 0.5152
+        },
+        "latency_ms": 4222.4
+      },
+      "evaluado": "2026-09-27T21:58:34+00:00"
+    },
+    {
+      "id": "ec7b91d86a67",
+      "offer_id": "demo-ux",
+      "nombre": "cv_antonio_vega_n8n.pdf",
+      "texto": "Antonio Vega\nEspecialista Senior en n8n & Arquitecto de Integraciones\nEmail: antonio.vega@email.com | Teléfono: +34 690 123 456 | Ubicación: Murcia, España\nPERFIL PROFESIONAL\nExperto en orquestación de flujos de trabajo sin código y bajo código con n8n. Integración de agentes de IA, bases de datos y\nherramientas NoCode para automatización avanzada.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: n8n (Self-hosted & Cloud)  JavaScript / Node.js  Custom n8n Nodes  Webhooks & REST\nAPIs  AI Agents Integration (LangChain/n8n)  PostgreSQL / Redis  Docker  Make / Zapier\nEXPERIENCIA LABORAL\nn8n Integration Architect — NoCode Automation Lab\n2022 - Presente\nDiseño e implantación de más de 100 flujos complejos en n8n self-hosted. Integración de LLMs para procesamiento\ninteligente de correo y clasificación de tickets.\nDesarrollador de Integraciones & Backend — SaaS Connectors\n2019 - 2022\nDesarrollo de nodos personalizados para n8n en TypeScript, conexión con APIs REST/GraphQL y mantenimiento de\narquitecturas event-driven.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería del Software - Universidad de Murcia (2015 - 2019)",
+      "resultado": {
+        "apto_p": 0.8511,
+        "apto": true,
+        "score": 2.8741,
+        "porcentaje": 71.9,
+        "brechas": [
+          "Research con usuarios"
+        ],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5406,
+          "Design systems": 0.6278,
+          "Prototipado": 0.6112,
+          "Research con usuarios": 0.4503
+        },
+        "latency_ms": 4488.9
+      },
+      "evaluado": "2026-09-27T21:58:38+00:00"
+    },
+    {
+      "id": "4b81deb9e121",
+      "offer_id": "demo-ux",
+      "nombre": "cv_astrid_lindqvist_data.pdf",
+      "texto": "Astrid Lindqvist\nLead Data Engineer & Business Intelligence\nEmail: astrid.lindqvist@email.com | Teléfono: +34 656 789 012 | Ubicación: Málaga, España\nPERFIL PROFESIONAL\nArquitecta de soluciones de datos masivos. Diseño e implementación de pipelines ETL/ELT eficientes, almacenes de datos\ncloud y paneles analíticos en tiempo real.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Python  SQL  Apache Spark  Snowflake  dbt  Airflow  AWS (S3, Redshift)  PowerBI /\nTableau\nEXPERIENCIA LABORAL\nSenior Data Engineer — Cloud Data Platforms\n2021 - Presente\nConstrucción de pipelines de datos masivos con PySpark y dbt sobre Snowflake, procesando más de 10M de eventos diarios.\nBusiness Intelligence Specialist — Global Analytics Corp\n2018 - 2021\nModelado de datos dimensional (Star Schema), optimización de consultas SQL complejas y despliegue de tableros directivos\nen Power BI.\nEDUCACIÓN Y FORMACIÓN\nGrado en Matemáticas y Estadística - Universidad de Málaga (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.7316,
+        "apto": true,
+        "score": 2.7568,
+        "porcentaje": 68.9,
+        "brechas": [
+          "Research con usuarios"
+        ],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5377,
+          "Design systems": 0.7292,
+          "Prototipado": 0.6077,
+          "Research con usuarios": 0.4716
+        },
+        "latency_ms": 3951.3
+      },
+      "evaluado": "2026-09-27T21:58:42+00:00"
+    },
+    {
+      "id": "442706c8bac2",
+      "offer_id": "demo-ux",
+      "nombre": "cv_carlos_roldan_linux.pdf",
+      "texto": "Carlos Roldán\nAdministrador Senior de Sistemas Linux & DevOps\nEmail: carlos.roldan@email.com | Teléfono: +34 678 901 234 | Ubicación: Zaragoza, España\nPERFIL PROFESIONAL\nSysadmin Linux con amplia experiencia en alta disponibilidad, virtualización, automatización de infraestructura como código\n(IaC) y entornos containerizados.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Debian / RedHat / Ubuntu  Bash / Python  Ansible  Docker & Kubernetes  Terraform  Nginx\n/ HAProxy  Prometheus & Grafana  CI/CD (GitLab CI)\nEXPERIENCIA LABORAL\nSenior Linux Systems Administrator — Infrastructure Cloud Services\n2019 - Presente\nAdministración de clusters Kubernetes y servidores RHEL/Debian con 99.99% de uptime. Automatización de despliegues con\nAnsible y Terraform.\nAdministrador de Sistemas Unix/Linux — DataCenter Operations\n2015 - 2019\nGestión de servidores Web, bases de datos MySQL/PostgreSQL y configuración de firewalls/VPNs a nivel de kernel.\nEDUCACIÓN Y FORMACIÓN\nGrado Superior en Administración de Sistemas Informáticos en Red (ASIR) (2013 - 2015)",
+      "resultado": {
+        "apto_p": 0.8499,
+        "apto": true,
+        "score": 2.8687,
+        "porcentaje": 71.7,
+        "brechas": [
+          "Figma 2 años",
+          "Research con usuarios"
+        ],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.4716,
+          "Design systems": 0.7079,
+          "Prototipado": 0.5911,
+          "Research con usuarios": 0.4365
+        },
+        "latency_ms": 4038.5
+      },
+      "evaluado": "2026-09-27T21:58:46+00:00"
+    },
+    {
+      "id": "fba298644dfb",
+      "offer_id": "demo-ux",
+      "nombre": "cv_jaime_morales_robotica.pdf",
+      "texto": "Jaime Morales\nIngeniero en Robótica & Sistemas Autónomos\nEmail: jaime.morales@email.com | Teléfono: +34 634 567 890 | Ubicación: Valencia, España\nPERFIL PROFESIONAL\nIngeniero especializado en robótica industrial y móvil, diseño de algoritmos de navegación (SLAM), control cinemático y\nprogramación en tiempo real con ROS/ROS2.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: ROS / ROS2  C++  Python  Kinematics & Dynamics  SLAM & Navigation  Gazebo / Isaac\nSim  Embedded C  LiDAR & Computer Vision\nEXPERIENCIA LABORAL\nRobotics Engineer — Automation & Robotics Tech\n2021 - Presente\nDesarrollo de navegación autónoma para robots AGV en almacenes logísticos mediante ROS2 y SLAM 3D. Integración de\nsensores sensores LiDAR y cámaras de profundidad.\nIngeniero de Control y Microcontroladores — RoboTech Solutions\n2018 - 2021\nProgramación de sistemas embebidos C/C++ para control de servomotores y brazos robóticos articulados de 6 ejes.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería Robótica - Universitat Politècnica de València (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.8476,
+        "apto": true,
+        "score": 3.0099,
+        "porcentaje": 75.2,
+        "brechas": [],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5771,
+          "Design systems": 0.6994,
+          "Prototipado": 0.7124,
+          "Research con usuarios": 0.564
+        },
+        "latency_ms": 4095.7
+      },
+      "evaluado": "2026-09-27T21:58:50+00:00"
+    },
+    {
+      "id": "bbec1d5493de",
+      "offer_id": "demo-ux",
+      "nombre": "cv_josemi_navarro_ai.pdf",
+      "texto": "Josemi Navarro\nIngeniero de Inteligencia Artificial & LLMs\nEmail: josemi.navarro@email.com | Teléfono: +34 623 456 789 | Ubicación: Barcelona, España\nPERFIL PROFESIONAL\nIngeniero R&D; enfocado en el desarrollo e integración de modelos de lenguaje (LLMs), arquitecturas RAG, visión por\ncomputador y redes neuronales profundas para soluciones empresariales escalables.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Python  PyTorch  TensorFlow  LangChain / LlamaIndex  Fine-tuning & RAG  OpenAI /\nAnthropic APIs  Docker  FastAPI\nEXPERIENCIA LABORAL\nAI Software Engineer — Cognitive Tech Lab\n2022 - Presente\nDesarrollo e implementación de agentes autónomos y sistemas RAG enterprise sobre datos vectoriales con Qdrant y\nPinecone. Optimización de latencia en modelos local Llama 3.\nData Scientist & Machine Learning Specialist — DataInsight Corp\n2019 - 2022\nEntrenamiento de modelos predictivos y visión por computador para detección de anomalías en tiempo real.\nEDUCACIÓN Y FORMACIÓN\nMáster en Inteligencia Artificial - Universidad de Barcelona (2018 - 2019)",
+      "resultado": {
+        "apto_p": 0.8352,
+        "apto": true,
+        "score": 2.9012,
+        "porcentaje": 72.5,
+        "brechas": [],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5646,
+          "Design systems": 0.7114,
+          "Prototipado": 0.7011,
+          "Research con usuarios": 0.5654
+        },
+        "latency_ms": 4005.6
+      },
+      "evaluado": "2026-09-27T21:58:54+00:00"
+    },
+    {
+      "id": "5cd7f7b097a6",
+      "offer_id": "demo-ux",
+      "nombre": "cv_laura_benitez_diseno_web.pdf",
+      "texto": "Laura Benítez\nDiseñadora UX/UI & Desarrolladora Frontend\nEmail: laura.benitez@email.com | Teléfono: +34 645 678 901 | Ubicación: Sevilla, España\nPERFIL PROFESIONAL\nEspecialista en la creación de experiencias digitales intuitivas y atractivas. Combinación de investigación de usuario,\nsistemas de diseño visual y desarrollo frontend moderno.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: Figma  UI/UX Research  Design Systems  HTML5 / CSS3 / Tailwind  TypeScript  React /\nNext.js  Prototipado interactivo  Accesibilidad (WCAG)\nEXPERIENCIA LABORAL\nLead Product Designer & Frontend Developer — Creative Digital Studio\n2020 - Presente\nDiseño y desarrollo del sistema de diseño corporativo accesible. Creación de prototipos de alta fidelidad en Figma e\nimplementación frontend con React y Tailwind.\nDiseñadora Web & UX — Interactive Media Agency\n2017 - 2020\nInvestigación con usuarios, mapas de experiencia, wireframing y rediseño completo de plataformas e-commerce.\nEDUCACIÓN Y FORMACIÓN\nGrado en Diseño Digital y Multimedia - Universidad de Sevilla (2013 - 2017)",
+      "resultado": {
+        "apto_p": 0.9244,
+        "apto": true,
+        "score": 3.0526,
+        "porcentaje": 76.3,
+        "brechas": [],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5219,
+          "Design systems": 0.801,
+          "Prototipado": 0.881,
+          "Research con usuarios": 0.8365
+        },
+        "latency_ms": 4101.0
+      },
+      "evaluado": "2026-09-27T21:58:58+00:00"
+    },
+    {
+      "id": "ce0a4cc3f77f",
+      "offer_id": "demo-ux",
+      "nombre": "cv_sergio_iglesias_automatizaciones.pdf",
+      "texto": "Sergio Iglesias\nEspecialista en Automatización (RPA & Integration)\nEmail: sergio.iglesias@email.com | Teléfono: +34 689 012 345 | Ubicación: Vigo, España\nPERFIL PROFESIONAL\nIngeniero enfocado en la eliminación de tareas repetitivas y optimización de workflows empresariales mediante RPA, scripts a\nmedida e integración de servicios SaaS.\nTECNOLOGÍAS Y COMPETENCIAS\nEspecialidades principales: UiPath  Power Automate  Python Scripting  REST APIs / Webhooks  Selenium / Playwright \nZapier / Make  SQL  Process Mining\nEXPERIENCIA LABORAL\nAutomation Specialist & RPA Developer — Process Automation Studio\n2021 - Presente\nDiseño e implementación de bots UiPath y Power Automate para automatización de facturación y extracción de datos ERP.\nAhorro de +1500 horas anuales.\nIntegrador de Procesos IT — Workflow Optimization Co\n2018 - 2021\nDesarrollo de conectores personalizados en Python y webhooks para la sincronización fluida entre CRMs, ERPs y pasarelas\nde pago.\nEDUCACIÓN Y FORMACIÓN\nGrado en Ingeniería de Organización Industrial - Universidad de Vigo (2014 - 2018)",
+      "resultado": {
+        "apto_p": 0.8479,
+        "apto": true,
+        "score": 2.8375,
+        "porcentaje": 70.9,
+        "brechas": [
+          "Research con usuarios"
+        ],
+        "detalle_requisitos": {
+          "Figma 2 años": 0.5522,
+          "Design systems": 0.6989,
+          "Prototipado": 0.7273,
+          "Research con usuarios": 0.4931
+        },
+        "latency_ms": 4165.8
+      },
+      "evaluado": "2026-09-27T21:59:03+00:00"
     }
   ],
   "certs": [],

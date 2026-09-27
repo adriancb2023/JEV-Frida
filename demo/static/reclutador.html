@@ -67,7 +67,8 @@ background:#1f1f1f;font-size:13px}
 .cv-del{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;margin:0 !important;padding:0 !important;font-size:12px}
 /* ranking estilo tracklist */
 table{width:100%;border-collapse:collapse;font-size:14px}
-th{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3;text-align:left;padding:8px 12px;border-bottom:1px solid #2a2a2a}
+th{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b3b3b3;text-align:left;padding:8px 12px;border-bottom:1px solid #2a2a2a;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:#fff}
 td{padding:10px 12px;border-bottom:1px solid #1f1f1f;vertical-align:middle}
 tbody tr{border-radius:4px}tbody tr:hover{background:#2a2a2a}
 td.idx{color:#b3b3b3;width:36px}td .t{font-weight:700}
@@ -110,7 +111,7 @@ td.idx{color:#b3b3b3;width:36px}td .t{font-weight:700}
 <div class="card"><div class="step">Paso 3 · Ranking</div><h2>Evalúa con KEV</h2>
 <button class="primary" onclick="evaluar()">Evaluar todos</button> <span id="status"></span>
 <p style="height:14px"></p>
-<table id="rank"><thead><tr><th>#</th><th>Título</th><th>¿Apto?</th><th>% match</th><th>Brechas</th></tr></thead><tbody></tbody></table></div>
+<table id="rank"><thead><tr><th data-k="idx">#</th><th data-k="nombre">Candidato</th><th data-k="apto">¿Apto?</th><th data-k="pct">% match</th><th data-k="brechas">Brechas</th></tr></thead><tbody></tbody></table></div>
 </main>
 <script>
 let OID=null;
@@ -226,13 +227,41 @@ async function evaluar(){
   const r=await fetch(`/api/offers/${OID}/evaluate`,{method:'POST'});
   if(!r.ok){status('Error: '+(await r.text()).slice(0,300));return}
   const j=await r.json(); status('');
-  document.querySelector('#rank tbody').innerHTML=j.ranking.map((c,i)=>
+  LAST_RANK=j.ranking.map((c,i)=>({...c,_i:i})); SORT={k:null,dir:1}; renderRank();
+  cargar();
+}
+// ordenación al pulsar cabeceras: alterna ascendente/descendente
+let LAST_RANK=[],SORT={k:null,dir:1};
+const BASE_TH={idx:'#',nombre:'Candidato',apto:'¿Apto?',pct:'% match',brechas:'Brechas'};
+document.querySelectorAll('#rank th').forEach(th=>{
+  th.onclick=()=>{
+    const k=th.dataset.k;
+    SORT.dir=(SORT.k===k)?-SORT.dir:(k==='idx'||k==='nombre'?1:-1);
+    SORT.k=k; renderRank();
+  };
+});
+function rankVal(c,k){
+  if(k==='idx')return c._i;
+  if(k==='nombre')return c.nombre.toLowerCase();
+  if(k==='apto')return c.apto_p;
+  if(k==='pct')return c.porcentaje;
+  return c.brechas.length;
+}
+function renderRank(){
+  const rows=[...LAST_RANK];
+  if(SORT.k)rows.sort((a,b)=>{
+    const va=rankVal(a,SORT.k),vb=rankVal(b,SORT.k);
+    return (va>vb?1:va<vb?-1:0)*SORT.dir;
+  });
+  document.querySelectorAll('#rank th').forEach(th=>{
+    th.textContent=BASE_TH[th.dataset.k]+(th.dataset.k===SORT.k?(SORT.dir===1?' ▲':' ▼'):'');
+  });
+  document.querySelector('#rank tbody').innerHTML=rows.map((c,i)=>
     `<tr><td class="idx">${i+1}</td><td><span class="t">${c.nombre}</span></td>
      <td class="${c.apto?'si':'no'}">${c.apto?'SÍ':'NO'} · ${c.apto_p}</td>
      <td><div class="bar"><i style="width:${c.porcentaje}%"></i></div><span class="pct">${c.porcentaje}%</span></td>
      <td class="brechas">${c.brechas.length?c.brechas.join(' · '):'—'}</td></tr>`).join('');
-  if(window.gsap)gsap.from('#rank tbody tr',{x:-16,opacity:0,duration:.35,stagger:.07,ease:'power2.out'});
-  cargar();
+  if(window.gsap&&rows.length)gsap.from('#rank tbody tr',{x:-16,opacity:0,duration:.35,stagger:.07,ease:'power2.out'});
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
